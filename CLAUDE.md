@@ -33,6 +33,12 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - Branch por parte, saindo da `dev`: `ia/part-NN-short-description`. PR de volta para a `dev`.
 - **Nunca** faça push direto em `main` ou `dev`, force push, nem merge de PR. Quem faz merge é o Diego.
 
+## Versionamento
+
+- Versionamento semântico (`MAJOR.MINOR.PATCH`). A versão vive **só no `pom.xml`**. Enquanto for `0.x`, a API é considerada instável.
+- **Não altere a versão, crie tags nem edite `CHANGELOG.md` na mão.** Isso será automatizado (ver `docs/ROADMAP.md`, Parte 7).
+- O tipo do commit decide a versão, então use o tipo certo: `fix:` = patch, `feat:` = minor, `feat!:` ou rodapé `BREAKING CHANGE:` = major. `docs:`, `test:`, `refactor:` e `chore:` não geram versão. Não rotule funcionalidade nova como `chore:`.
+
 ## Idioma
 
 - **Inglês:** código, entidades, campos, pacotes, branches e commits (`Donor`, `birthDate`). `cpf` e `rg` ficam como estão (termos brasileiros).
