@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Lista de doadores</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+html{background:#FFFFFF}
+</style>
+</helmet>
+<div style="width:794px;box-sizing:border-box;padding:48px 48px 44px;background:#FFFFFF;font-family:'Instrument Sans',system-ui,sans-serif;color:#1A1D23;font-size:14px;line-height:1.4">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:20px;border-bottom:1px solid #C9CDD3">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:40px;height:40px;border-radius:10px;background:#B3243A;color:#fff;display:flex;align-items:center;justify-content:center">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c3.4 4.2 6 7.2 6 10.6a6 6 0 0 1-12 0c0-3.4 2.6-6.4 6-10.6Z" fill="currentColor"/></svg>
+      </div>
+      <div>
+        <div style="font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-weight:700;font-size:16px;letter-spacing:-0.01em">Grupo Exemplo de Doadores</div>
+        <div style="font-size:12.5px;color:#4A515C">Contato: (00) 00000-0000</div>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#4A515C">Emitido em</div>
+      <div style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px;font-weight:600">30/10/2026</div>
+    </div>
+  </header>
+
+  <h1 style="margin:28px 0 4px;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;text-wrap:balance">Lista de doadores</h1>
+  <p style="margin:0 0 22px;font-size:13.5px;color:#4A515C">8 doadores selecionados</p>
+
+  <div style="display:grid;grid-template-columns:26px minmax(0,1.2fr) minmax(0,1.15fr) minmax(0,1.5fr);column-gap:14px;padding:0 0 8px;border-bottom:2px solid #1A1D23;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#1A1D23">
+    <span></span>
+    <span>Nome</span>
+    <span>Documentação</span>
+    <span>Endereço</span>
+  </div>
+
+  <sc-for list="{{ rows }}" as="d" hint-placeholder-count="4">
+    <div style="display:grid;grid-template-columns:26px minmax(0,1.2fr) minmax(0,1.15fr) minmax(0,1.5fr);column-gap:14px;align-items:start;padding:12px 0;border-bottom:1px solid #C9CDD3">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px;color:#4A515C;padding-top:2px">{{ d.n }}</span>
+      <div>
+        <div style="font-size:14.5px;font-weight:600;line-height:1.3">{{ d.nome }}</div>
+        <span style="display:inline-block;margin-top:6px;padding:1px 9px;border:1px solid #1A1D23;border-radius:999px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:600">{{ d.gs }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:30px minmax(0,1fr);row-gap:2px;align-items:baseline">
+        <span style="font-size:12px;color:#4A515C">CPF</span>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px">{{ d.cpf }}</span>
+        <span style="font-size:12px;color:#4A515C">RG</span>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px">{{ d.rg }}</span>
+        <span style="font-size:12px;color:#4A515C">Cel</span>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px">{{ d.cel }}</span>
+      </div>
+      <div style="font-size:13.5px">
+        <div>{{ d.rua }}</div>
+        <div style="color:#3C424B">{{ d.local }}</div>
+        <sc-if value="{{ d.hasComp }}" hint-placeholder-val="{{ false }}">
+          <div style="color:#4A515C;font-size:12.5px">{{ d.comp }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-for>
+
+  <footer style="margin-top:18px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;font-size:12px;color:#4A515C">
+    <span>Documento com dados pessoais. Manuseie com cuidado.</span>
+    <span style="font-family:'IBM Plex Mono',ui-monospace,monospace">Página 1 de 1</span>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1060}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = [
+      { nome: 'Helena Duarte Campos', gs: 'O+', cpf: '214.380.917-52', rg: 'MG-18.442.906', cel: '(34) 90000-0101', rua: 'Rua das Acácias, 245', local: 'Centro · Uberlândia/MG', comp: 'Apto 302' },
+      { nome: 'Rafael Menezes Lima', gs: 'A+', cpf: '371.005.846-30', rg: 'MG-12.907.351', cel: '(34) 90000-0102', rua: 'Av. Brasil, 1280', local: 'Santa Mônica · Uberlândia/MG', comp: '' },
+      { nome: 'Beatriz Nogueira', gs: 'B+', cpf: '098.612.774-09', rg: 'MG-20.118.443', cel: '(34) 90000-0103', rua: 'Rua Goiás, 77', local: 'São Sebastião · Araguari/MG', comp: '' },
+      { nome: 'Daniela Prado Reis', gs: 'AB+', cpf: '630.774.152-88', rg: 'MG-17.805.126', cel: '(34) 90000-0105', rua: 'Rua Dois, 410', local: 'Centro · Monte Carmelo/MG', comp: 'Casa dos fundos' },
+      { nome: 'Eduardo Tavares', gs: 'A-', cpf: '129.846.503-17', rg: 'MG-13.557.082', cel: '(34) 90000-0106', rua: 'Rua Minas Gerais, 903', local: 'Martins · Uberlândia/MG', comp: 'Sala 4' },
+      { nome: 'Fernanda Siqueira', gs: 'O+', cpf: '582.431.097-64', rg: 'MG-19.274.660', cel: '(34) 90000-0107', rua: 'Praça da Matriz, 12', local: 'Centro · Patos de Minas/MG', comp: '' },
+      { nome: 'Isabela Fontes', gs: 'A+', cpf: '746.120.385-92', rg: 'MG-21.033.578', cel: '(34) 90000-0109', rua: 'Rua XV de Novembro, 560', local: 'Centro · Uberaba/MG', comp: 'Apto 101' },
+      { nome: 'João Pedro Albuquerque', gs: 'O+', cpf: '863.507.124-05', rg: 'MG-16.918.247', cel: '(34) 90000-0110', rua: 'Av. Rondon Pacheco, 3300', local: 'Tibery · Uberlândia/MG', comp: 'Bloco B, apto 22' }
+    ];
+    const rows = base.map((d, i) => ({ ...d, n: i + 1, hasComp: d.comp !== '' }));
+    return { rows };
+  }
+}
+</script>
+</body>
+</html>

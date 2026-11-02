@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Gerar relatório</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7}
+a{color:#B3243A}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:10px;font:600 14.5px 'Instrument Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;border:1px solid transparent;box-sizing:border-box}
+.btn-primary{background:#B3243A;color:#fff}
+.btn-primary:hover{background:#8F1B2D}
+.btn-ghost{background:transparent;color:#5A616C}
+.btn-ghost:hover{background:#EBEDF0;color:#1A1D23}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;border:0;background:transparent;color:#3C424B;cursor:pointer}
+.icon-btn:hover{background:#FBECEF;color:#8F1B2D}
+.lbl{display:block;margin:0 0 6px;font-size:13.5px;font-weight:600;color:#3C424B}
+.field{width:100%;box-sizing:border-box;height:46px;padding:0 14px;border:1px solid #8C939E;border-radius:10px;background:#fff;font:400 15.5px 'Instrument Sans',system-ui,sans-serif;color:#1A1D23}
+.field:focus{outline:2px solid #B3243A;outline-offset:1px;border-color:#B3243A}
+.pg{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 12px;border-radius:10px;border:0;background:transparent;color:#1A1D23;font:500 14.5px 'Instrument Sans',system-ui,sans-serif;cursor:pointer;text-decoration:none}
+.pg:hover{background:#EBEDF0}
+.pg.on{background:#B3243A;color:#fff}
+.pg.on:hover{background:#8F1B2D}
+.pg[disabled]{color:#8C939E;cursor:default}
+.pg[disabled]:hover{background:transparent}
+.pick{cursor:pointer}
+.pick:hover{background:#FAFAFB}
+.pick input{width:20px;height:20px;margin:0;accent-color:#B3243A;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #B3243A;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height:1020px;background:#F4F5F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#1A1D23;font-size:15px;line-height:1.45">
+
+  <header style="background:#fff;border-bottom:1px solid #E2E5E9">
+    <div style="max-width:1120px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:34px;height:34px;border-radius:9px;background:#B3243A;color:#fff;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c3.4 4.2 6 7.2 6 10.6a6 6 0 0 1-12 0c0-3.4 2.6-6.4 6-10.6Z" fill="currentColor"/></svg>
+        </div>
+        <span style="font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em">Registro de Doadores</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:14px;color:#5A616C">Admin</span>
+        <button type="button" class="btn btn-ghost" style="min-height:44px;padding:0 12px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H5v16h5"/><path d="m15 8 4 4-4 4"/><path d="M19 12H9"/></svg>
+          Sair
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:1120px;margin:0 auto;padding:24px 24px 56px">
+
+    <a href="Main.dc.html" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#5A616C;font-size:14.5px;font-weight:500;text-decoration:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg>
+      Voltar para doadores
+    </a>
+
+    <div style="margin-top:8px">
+      <h1 style="margin:0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:34px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">Gerar relatório</h1>
+      <p style="margin:6px 0 0;color:#5A616C;font-size:15px">Escolha os doadores que entram na lista impressa.</p>
+    </div>
+
+    <div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+
+      <section style="flex:999 1 560px;min-width:0;background:#fff;border:1px solid #E2E5E9;border-radius:14px">
+        <div style="padding:20px 20px 16px;position:relative">
+          <label for="busca" class="sr">Buscar doador</label>
+          <span style="position:absolute;left:36px;top:50%;transform:translateY(-50%);color:#5A616C;display:flex">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <input id="busca" type="search" placeholder="Buscar por nome, CPF ou RG" style="width:100%;box-sizing:border-box;height:48px;padding:0 16px 0 46px;border:1px solid #8C939E;border-radius:12px;background:#fff;font:400 16px 'Instrument Sans',system-ui,sans-serif;color:#1A1D23">
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:0 20px;min-height:44px;border-top:1px solid #E2E5E9;background:#FAFAFB;font-size:13.5px;color:#5A616C">
+          <label style="display:inline-flex;align-items:center;gap:12px;min-height:44px;cursor:pointer;font-weight:600;color:#3C424B">
+            <input type="checkbox" style="width:20px;height:20px;margin:0;accent-color:#B3243A">
+            Selecionar todos (16)
+          </label>
+          <span>8 de 16 selecionados</span>
+        </div>
+
+        <sc-for list="{{ donors }}" as="d" hint-placeholder-count="5">
+          <label class="pick" style="display:grid;grid-template-columns:24px minmax(0,1fr) 64px minmax(0,1.1fr);gap:16px;align-items:center;padding:10px 20px;min-height:60px;border-top:1px solid #EDEFF2;background:{{ d.bg }}">
+            <sc-if value="{{ d.sel }}" hint-placeholder-val="{{ true }}">
+              <input type="checkbox" checked aria-label="Incluir {{ d.nome }}">
+            </sc-if>
+            <sc-if value="{{ d.unsel }}" hint-placeholder-val="{{ false }}">
+              <input type="checkbox" aria-label="Incluir {{ d.nome }}">
+            </sc-if>
+            <span style="min-width:0">
+              <span style="display:block;font-size:15.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.nome }}</span>
+              <span style="display:block;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:#5A616C">{{ d.cpf }}</span>
+            </span>
+            <span style="justify-self:start;padding:2px 10px;border-radius:999px;background:#FBECEF;color:#8F1B2D;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;font-weight:600">{{ d.gs }}</span>
+            <span style="color:#3C424B;font-size:14.5px">{{ d.cidade }}</span>
+          </label>
+        </sc-for>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 20px;border-top:1px solid #E2E5E9">
+          <span style="font-size:14px;color:#5A616C">Mostrando 1–10 de 16 doadores</span>
+          <nav aria-label="Paginação" style="display:flex;align-items:center;gap:4px">
+            <button type="button" class="pg" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+              Anterior
+            </button>
+            <button type="button" class="pg on" aria-current="page" aria-label="Página 1">1</button>
+            <button type="button" class="pg" aria-label="Página 2">2</button>
+            <button type="button" class="pg">
+              Próxima
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+            </button>
+          </nav>
+        </div>
+      </section>
+
+      <aside style="position:sticky;top:24px;flex:1 1 340px;min-width:0;max-width:100%;background:#fff;border:1px solid #E2E5E9;border-radius:14px;padding:24px">
+        <h2 style="margin:0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-0.01em">Relatório</h2>
+
+        <div style="margin-top:18px">
+          <label class="lbl" for="data">Data do relatório</label>
+          <div style="position:relative">
+            <input id="data" class="field" type="text" inputmode="numeric" value="30/10/2026" autocomplete="off" style="padding-right:44px;font-family:'IBM Plex Mono',ui-monospace,monospace">
+            <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#5A616C;display:flex">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <h3 style="margin:0;font-size:14px;font-weight:600;color:#3C424B">Doadores no relatório</h3>
+          <span style="padding:2px 10px;border-radius:999px;background:#1A1D23;color:#fff;font-size:13px;font-weight:600">8</span>
+        </div>
+
+        <ul style="list-style:none;margin:8px 0 0;padding:0;max-height:352px;overflow-y:auto">
+          <sc-for list="{{ chosen }}" as="c" hint-placeholder-count="4">
+            <li style="display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;border-top:1px solid #EDEFF2;padding-left:2px">
+              <span style="min-width:0;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.nome }}</span>
+              <button type="button" class="icon-btn" aria-label="Remover {{ c.nome }}">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+              </button>
+            </li>
+          </sc-for>
+        </ul>
+
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px">
+          <a class="btn btn-primary" href="Relatorio.dc.html">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V4h10v5"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v6H7z"/></svg>
+            Gerar relatório
+          </a>
+          <a class="btn btn-ghost" href="Main.dc.html">Cancelar</a>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1020}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = [
+      { nome: 'Helena Duarte Campos', cpf: '214.380.917-52', gs: 'O+', cidade: 'Uberlândia/MG', sel: true },
+      { nome: 'Rafael Menezes Lima', cpf: '371.005.846-30', gs: 'A+', cidade: 'Uberlândia/MG', sel: true },
+      { nome: 'Beatriz Nogueira', cpf: '098.612.774-09', gs: 'B+', cidade: 'Araguari/MG', sel: true },
+      { nome: 'Caio Vasconcelos', cpf: '455.219.608-71', gs: 'O-', cidade: 'Uberlândia/MG', sel: false },
+      { nome: 'Daniela Prado Reis', cpf: '630.774.152-88', gs: 'AB+', cidade: 'Monte Carmelo/MG', sel: true },
+      { nome: 'Eduardo Tavares', cpf: '129.846.503-17', gs: 'A-', cidade: 'Uberlândia/MG', sel: true },
+      { nome: 'Fernanda Siqueira', cpf: '582.431.097-64', gs: 'O+', cidade: 'Patos de Minas/MG', sel: true },
+      { nome: 'Gustavo Amaral Ribeiro', cpf: '307.958.261-40', gs: 'B-', cidade: 'Uberlândia/MG', sel: false },
+      { nome: 'Isabela Fontes', cpf: '746.120.385-92', gs: 'A+', cidade: 'Uberaba/MG', sel: true },
+      { nome: 'João Pedro Albuquerque', cpf: '863.507.124-05', gs: 'O+', cidade: 'Uberlândia/MG', sel: true }
+    ];
+    const donors = base.map((d) => ({ ...d, unsel: !d.sel, bg: d.sel ? '#FDF6F7' : '#FFFFFF' }));
+    const chosen = base.filter((d) => d.sel).map((d) => ({ nome: d.nome }));
+    return { donors, chosen };
+  }
+}
+</script>
+</body>
+</html>

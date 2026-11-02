@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Recuperar senha</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7}
+a{color:#B3243A}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:10px;font:600 14.5px 'Instrument Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;border:1px solid transparent;box-sizing:border-box}
+.btn-primary{background:#B3243A;color:#fff}
+.btn-primary:hover{background:#8F1B2D}
+.lbl{display:block;margin:0 0 6px;font-size:13.5px;font-weight:600;color:#3C424B}
+.field{width:100%;box-sizing:border-box;height:46px;padding:0 14px;border:1px solid #8C939E;border-radius:10px;background:#fff;font:400 15.5px 'Instrument Sans',system-ui,sans-serif;color:#1A1D23}
+.field:focus{outline:2px solid #B3243A;outline-offset:1px;border-color:#B3243A}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:15px;letter-spacing:0.04em}
+.hint{margin:6px 0 0;font-size:13px;color:#5A616C}
+button:focus-visible,a:focus-visible{outline:2px solid #B3243A;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height:760px;background:#F4F5F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#1A1D23;font-size:15px;line-height:1.45;display:flex;align-items:center;justify-content:center;padding:48px 24px;box-sizing:border-box">
+
+  <main style="width:100%;max-width:440px">
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:28px">
+      <div style="width:40px;height:40px;border-radius:10px;background:#B3243A;color:#fff;display:flex;align-items:center;justify-content:center">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c3.4 4.2 6 7.2 6 10.6a6 6 0 0 1-12 0c0-3.4 2.6-6.4 6-10.6Z" fill="currentColor"/></svg>
+      </div>
+      <span style="font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.01em">Registro de Doadores</span>
+    </div>
+
+    <form style="background:#fff;border:1px solid #E2E5E9;border-radius:16px;padding:32px 32px 28px">
+      <h1 style="margin:0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">Recuperar senha</h1>
+      <p style="margin:8px 0 0;color:#5A616C;font-size:14.5px">Digite o código de recuperação que você guardou e escolha uma senha nova.</p>
+
+      <div style="margin-top:24px">
+        <label class="lbl" for="codigo">Código de recuperação (6 palavras)</label>
+        <input id="codigo" class="field" type="text" autocomplete="off" spellcheck="false" placeholder="palavra-palavra-palavra-palavra-palavra-palavra" value="marujo-cobalto-pente-lucro-varanda-tijolo">
+        <p class="hint">Pode digitar com hífens, com espaços ou tudo junto, em maiúsculas ou minúsculas.</p>
+      </div>
+
+      <div style="margin-top:18px">
+        <label class="lbl" for="nova">Nova senha</label>
+        <input id="nova" class="field" type="password" autocomplete="new-password" value="senhanova123">
+        <p class="hint">Mínimo de 8 caracteres.</p>
+      </div>
+
+      <div style="margin-top:18px">
+        <label class="lbl" for="repetir">Repetir nova senha</label>
+        <input id="repetir" class="field" type="password" autocomplete="new-password" value="senhanova123">
+      </div>
+
+      <a href="Login.dc.html" class="btn btn-primary" style="width:100%;margin-top:24px">Redefinir senha</a>
+
+      <div style="margin-top:14px;text-align:center">
+        <a href="Login.dc.html" style="display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:14.5px;font-weight:500">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg>
+          Voltar para o login
+        </a>
+      </div>
+    </form>
+
+    <div style="margin-top:20px;padding:14px 16px;border:1px solid #E2E5E9;border-radius:12px;background:#fff;font-size:13.5px;color:#3C424B">
+      <strong style="font-weight:600">Perdeu o código?</strong> Sem ele não dá para trocar a senha por aqui. Quem administra o servidor pode redefinir o acesso do administrador. Os doadores e as configurações não são apagados.
+    </div>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

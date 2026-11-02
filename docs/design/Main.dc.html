@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Doadores</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7}
+a{color:#B3243A}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 18px;border-radius:10px;font:600 14.5px 'Instrument Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;border:1px solid transparent;box-sizing:border-box}
+.btn-primary{background:#B3243A;color:#fff}
+.btn-primary:hover{background:#8F1B2D}
+.btn-secondary{background:#fff;color:#1A1D23;border-color:#8C939E}
+.btn-secondary:hover{background:#EBEDF0}
+.btn-ghost{background:transparent;color:#5A616C}
+.btn-ghost:hover{background:#EBEDF0;color:#1A1D23}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;border:0;background:transparent;color:#3C424B;cursor:pointer;text-decoration:none}
+.icon-btn:hover{background:#EBEDF0;color:#1A1D23}
+.icon-btn.danger:hover{background:#FBECEF;color:#8F1B2D}
+.menu-item{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:#1A1D23;font:500 14.5px 'Instrument Sans',system-ui,sans-serif;text-align:left;cursor:pointer}
+.menu-item:hover{background:#F4F5F7}
+.row:hover{background:#FAFAFB}
+.pg{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 12px;border-radius:10px;border:0;background:transparent;color:#1A1D23;font:500 14.5px 'Instrument Sans',system-ui,sans-serif;cursor:pointer;text-decoration:none}
+.pg:hover{background:#EBEDF0}
+.pg.on{background:#B3243A;color:#fff}
+.pg.on:hover{background:#8F1B2D}
+.pg[disabled]{color:#8C939E;cursor:default}
+.pg[disabled]:hover{background:transparent}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #B3243A;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height:1140px;background:#F4F5F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#1A1D23;font-size:15px;line-height:1.45">
+
+  <header style="background:#fff;border-bottom:1px solid #E2E5E9">
+    <div style="max-width:1120px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:34px;height:34px;border-radius:9px;background:#B3243A;color:#fff;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c3.4 4.2 6 7.2 6 10.6a6 6 0 0 1-12 0c0-3.4 2.6-6.4 6-10.6Z" fill="currentColor"/></svg>
+        </div>
+        <span style="font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em">Registro de Doadores</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <a href="Configuracoes.dc.html" class="btn btn-ghost" style="min-height:44px;padding:0 12px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg>
+          Configurações
+        </a>
+        <span style="font-size:14px;color:#5A616C">Admin</span>
+        <a href="Login.dc.html" class="btn btn-ghost" style="min-height:44px;padding:0 12px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H5v16h5"/><path d="m15 8 4 4-4 4"/><path d="M19 12H9"/></svg>
+          Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:1120px;margin:0 auto;padding:32px 24px 56px">
+
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+      <div>
+        <h1 style="margin:0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:34px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">Doadores</h1>
+        <p style="margin:6px 0 0;color:#5A616C;font-size:15px">16 doadores cadastrados</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <div style="position:relative">
+          <button type="button" class="btn btn-secondary" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}">
+            Arquivos
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;right:0;top:calc(100% + 8px);width:230px;background:#fff;border:1px solid #D5D9DE;border-radius:12px;box-shadow:0 12px 32px rgba(26,29,35,0.14);padding:6px;z-index:5">
+              <button type="button" class="menu-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
+                Exportar CSV
+              </button>
+              <button type="button" class="menu-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5"/><path d="m7 9 5-5 5 5"/><path d="M5 20h14"/></svg>
+                Importar CSV
+              </button>
+            </div>
+          </sc-if>
+        </div>
+        <a class="btn btn-secondary" href="Selecao.dc.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>
+          Gerar lista
+        </a>
+        <a class="btn btn-primary" href="Cadastro.dc.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Cadastrar
+        </a>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;position:relative">
+      <label for="busca" class="sr">Buscar doador</label>
+      <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#5A616C;display:flex">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </span>
+      <input id="busca" type="search" placeholder="Buscar por nome, CPF ou RG" style="width:100%;box-sizing:border-box;height:52px;padding:0 16px 0 48px;border:1px solid #8C939E;border-radius:12px;background:#fff;font:400 16px 'Instrument Sans',system-ui,sans-serif;color:#1A1D23">
+    </div>
+
+    <div style="margin-top:16px;background:#fff;border:1px solid #E2E5E9;border-radius:14px">
+      <div style="overflow-x:auto;border-radius:14px">
+        <div style="min-width:920px">
+          <div style="display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1.3fr) minmax(0,1.3fr) 72px minmax(0,1.5fr) 144px;gap:16px;align-items:center;padding:0 16px 0 20px;height:44px;background:#FAFAFB;border-bottom:1px solid #E2E5E9;font-size:13px;font-weight:600;color:#5A616C">
+            <span>Nome</span>
+            <span>CPF</span>
+            <span>RG</span>
+            <span>Grupo</span>
+            <span>Cidade</span>
+            <span class="sr">Ações</span>
+          </div>
+
+          <sc-for list="{{ rows }}" as="d" hint-placeholder-count="5">
+            <div class="row" style="display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1.3fr) minmax(0,1.3fr) 72px minmax(0,1.5fr) 144px;gap:16px;align-items:center;padding:8px 16px 8px 20px;min-height:64px;border-top:1px solid #EDEFF2">
+              <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                <div style="flex:none;width:38px;height:38px;border-radius:50%;background:#FBECEF;color:#8F1B2D;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600">{{ d.ini }}</div>
+                <div style="min-width:0">
+                  <div style="font-size:15.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.nome }}</div>
+                  <div style="font-size:13px;color:#5A616C">{{ d.cel }}</div>
+                </div>
+              </div>
+              <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px">{{ d.cpf }}</span>
+              <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:14px">{{ d.rg }}</span>
+              <span style="justify-self:start;padding:2px 10px;border-radius:999px;background:#FBECEF;color:#8F1B2D;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;font-weight:600">{{ d.gs }}</span>
+              <span style="color:#3C424B">{{ d.cidade }}</span>
+              <div style="display:flex;justify-content:flex-end;gap:0">
+                <a class="icon-btn" href="Cadastro.dc.html" aria-label="Visualizar {{ d.nome }}">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </a>
+                <a class="icon-btn" href="Cadastro.dc.html" aria-label="Editar {{ d.nome }}">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="m14.5 7.5 3 3"/></svg>
+                </a>
+                <button type="button" class="icon-btn danger" aria-label="Excluir {{ d.nome }}">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="m6 7 1 13h10l1-13"/><path d="M10 11v5M14 11v5"/></svg>
+                </button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 20px;border-top:1px solid #E2E5E9">
+        <span style="font-size:14px;color:#5A616C">Mostrando 1–10 de 16 doadores</span>
+        <nav aria-label="Paginação" style="display:flex;align-items:center;gap:4px">
+          <button type="button" class="pg" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg>
+            Anterior
+          </button>
+          <button type="button" class="pg on" aria-current="page" aria-label="Página 1">1</button>
+          <button type="button" class="pg" aria-label="Página 2">2</button>
+          <button type="button" class="pg">
+            Próxima
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1140}}'>
+class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    const rows = [
+      { ini: 'HD', nome: 'Helena Duarte Campos', cel: '(34) 90000-0101', cpf: '214.380.917-52', rg: 'MG-18.442.906', gs: 'O+', cidade: 'Uberlândia/MG' },
+      { ini: 'RM', nome: 'Rafael Menezes Lima', cel: '(34) 90000-0102', cpf: '371.005.846-30', rg: 'MG-12.907.351', gs: 'A+', cidade: 'Uberlândia/MG' },
+      { ini: 'BN', nome: 'Beatriz Nogueira', cel: '(34) 90000-0103', cpf: '098.612.774-09', rg: 'MG-20.118.443', gs: 'B+', cidade: 'Araguari/MG' },
+      { ini: 'CV', nome: 'Caio Vasconcelos', cel: '(34) 90000-0104', cpf: '455.219.608-71', rg: 'MG-15.360.299', gs: 'O-', cidade: 'Uberlândia/MG' },
+      { ini: 'DR', nome: 'Daniela Prado Reis', cel: '(34) 90000-0105', cpf: '630.774.152-88', rg: 'MG-17.805.126', gs: 'AB+', cidade: 'Monte Carmelo/MG' },
+      { ini: 'ET', nome: 'Eduardo Tavares', cel: '(34) 90000-0106', cpf: '129.846.503-17', rg: 'MG-13.557.082', gs: 'A-', cidade: 'Uberlândia/MG' },
+      { ini: 'FS', nome: 'Fernanda Siqueira', cel: '(34) 90000-0107', cpf: '582.431.097-64', rg: 'MG-19.274.660', gs: 'O+', cidade: 'Patos de Minas/MG' },
+      { ini: 'GA', nome: 'Gustavo Amaral Ribeiro', cel: '(34) 90000-0108', cpf: '307.958.261-40', rg: 'MG-11.640.913', gs: 'B-', cidade: 'Uberlândia/MG' },
+      { ini: 'IF', nome: 'Isabela Fontes', cel: '(34) 90000-0109', cpf: '746.120.385-92', rg: 'MG-21.033.578', gs: 'A+', cidade: 'Uberaba/MG' },
+      { ini: 'JA', nome: 'João Pedro Albuquerque', cel: '(34) 90000-0110', cpf: '863.507.124-05', rg: 'MG-16.918.247', gs: 'O+', cidade: 'Uberlândia/MG' }
+    ];
+    return {
+      rows,
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Configurações</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7}
+a{color:#B3243A}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:10px;font:600 14.5px 'Instrument Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;border:1px solid transparent;box-sizing:border-box}
+.btn-primary{background:#B3243A;color:#fff}
+.btn-primary:hover{background:#8F1B2D}
+.btn-ghost{background:transparent;color:#5A616C}
+.btn-ghost:hover{background:#EBEDF0;color:#1A1D23}
+.btn-secondary{background:#fff;color:#1A1D23;border-color:#8C939E}
+.btn-secondary:hover{background:#EBEDF0}
+.btn-danger{background:#fff;color:#9B1C2E;border-color:#B3243A}
+.btn-danger:hover{background:#FBECEF}
+.lbl{display:block;margin:0 0 6px;font-size:13.5px;font-weight:600;color:#3C424B}
+.field{width:100%;box-sizing:border-box;height:46px;padding:0 14px;border:1px solid #8C939E;border-radius:10px;background:#fff;font:400 15.5px 'Instrument Sans',system-ui,sans-serif;color:#1A1D23}
+.field:focus{outline:2px solid #B3243A;outline-offset:1px;border-color:#B3243A}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:15px}
+.hint{margin:6px 0 0;font-size:13px;color:#5A616C}
+.card{background:#fff;border:1px solid #E2E5E9;border-radius:16px;padding:32px 36px}
+.h2{margin:0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.01em}
+.sub{margin:6px 0 0;color:#5A616C;font-size:14.5px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.rowline{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:18px 0;border-top:1px solid #E2E5E9}
+.sep{margin-top:28px;padding-top:26px;border-top:1px solid #E2E5E9}
+button:focus-visible,a:focus-visible{outline:2px solid #B3243A;outline-offset:2px}
+@media (max-width:760px){.g2{grid-template-columns:minmax(0,1fr)}.card{padding:24px 20px}}
+</style>
+</helmet>
+<div style="min-height:1500px;background:#F4F5F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#1A1D23;font-size:15px;line-height:1.45">
+
+  <header style="background:#fff;border-bottom:1px solid #E2E5E9">
+    <div style="max-width:1120px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:34px;height:34px;border-radius:9px;background:#B3243A;color:#fff;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c3.4 4.2 6 7.2 6 10.6a6 6 0 0 1-12 0c0-3.4 2.6-6.4 6-10.6Z" fill="currentColor"/></svg>
+        </div>
+        <span style="font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em">Registro de Doadores</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:14px;color:#5A616C">Admin</span>
+        <a href="Login.dc.html" class="btn btn-ghost" style="min-height:44px;padding:0 12px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H5v16h5"/><path d="m15 8 4 4-4 4"/><path d="M19 12H9"/></svg>
+          Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:920px;margin:0 auto;padding:24px 24px 64px">
+
+    <a href="Main.dc.html" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#5A616C;font-size:14.5px;font-weight:500;text-decoration:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg>
+      Voltar para doadores
+    </a>
+
+    <h1 style="margin:8px 0 0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:32px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">Configurações</h1>
+
+    <!-- Aviso de backup -->
+    <div style="margin-top:20px;display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid #E3C27A;border-radius:12px;background:#FFF8E6;color:#4A3A10">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:1px"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 10v4"/><path d="M12 17.5h.01"/></svg>
+      <div style="font-size:14.5px"><strong style="font-weight:600">Último backup: 18/10/2026 (12 dias atrás).</strong> Faça um novo e guarde o arquivo em um local seguro.</div>
+    </div>
+
+    <!-- Entidade -->
+    <form class="card" style="margin-top:20px">
+      <h2 class="h2">Entidade</h2>
+      <p class="sub">Aparece no cabeçalho do relatório impresso.</p>
+
+      <div class="g2" style="margin-top:22px">
+        <div>
+          <label class="lbl" for="ent-nome">Nome da entidade</label>
+          <input id="ent-nome" class="field" type="text" value="Grupo Exemplo de Doadores" autocomplete="off">
+        </div>
+        <div>
+          <label class="lbl" for="ent-contato">Contato</label>
+          <input id="ent-contato" class="field mono" type="tel" value="(00) 00000-0000" autocomplete="off">
+        </div>
+      </div>
+
+      <div style="margin-top:22px">
+        <span class="lbl">Logo</span>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:18px">
+          <div style="width:72px;height:72px;border-radius:14px;background:#B3243A;color:#fff;display:flex;align-items:center;justify-content:center">
+            <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c3.4 4.2 6 7.2 6 10.6a6 6 0 0 1-12 0c0-3.4 2.6-6.4 6-10.6Z" fill="currentColor"/></svg>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <button type="button" class="btn btn-secondary">Trocar logo</button>
+            <button type="button" class="btn btn-ghost">Remover</button>
+          </div>
+        </div>
+        <p class="hint">PNG ou JPG, até 1 MB. Sem logo, o relatório usa o desenho padrão.</p>
+      </div>
+
+      <div style="margin-top:28px;display:flex;justify-content:flex-end">
+        <button type="submit" class="btn btn-primary">Salvar alterações</button>
+      </div>
+    </form>
+
+    <!-- Segurança -->
+    <section class="card" style="margin-top:20px">
+      <h2 class="h2">Segurança</h2>
+      <p class="sub">Sua senha e o código para recuperá-la.</p>
+
+      <div class="rowline" style="margin-top:20px">
+        <div>
+          <div style="font-weight:600">Senha do administrador</div>
+          <div style="font-size:14px;color:#5A616C">Peça a senha atual e uma nova.</div>
+        </div>
+        <button type="button" class="btn btn-secondary">Alterar senha</button>
+      </div>
+      <div class="rowline">
+        <div>
+          <div style="font-weight:600">Código de recuperação</div>
+          <div style="font-size:14px;color:#5A616C">Gerar um novo invalida o código anterior.</div>
+        </div>
+        <button type="button" class="btn btn-secondary">Gerar novo código</button>
+      </div>
+    </section>
+
+    <!-- Backup -->
+    <section class="card" style="margin-top:20px">
+      <h2 class="h2">Backup</h2>
+      <p class="sub">Uma cópia de tudo: doadores, usuário e configurações. Serve para reinstalar o sistema ou mudar de servidor.</p>
+
+      <div style="margin-top:22px;padding:14px 16px;border-radius:12px;background:#F4F5F7;font-size:14px;color:#3C424B">
+        O arquivo é protegido pela senha que você escolher. <strong style="font-weight:600">Sem essa senha ele não abre, e ninguém consegue recuperá-la.</strong> Guarde em local seguro.
+      </div>
+
+      <!-- Criar -->
+      <form class="sep">
+        <h3 style="margin:0;font-size:17px;font-weight:600">Criar backup</h3>
+        <div class="g2" style="margin-top:16px">
+          <div>
+            <label class="lbl" for="bk-senha">Senha do backup</label>
+            <input id="bk-senha" class="field" type="password" autocomplete="new-password" value="senhadobackup">
+            <p class="hint">Mínimo de 8 caracteres.</p>
+          </div>
+          <div>
+            <label class="lbl" for="bk-rep">Repetir senha</label>
+            <input id="bk-rep" class="field" type="password" autocomplete="new-password" value="senhadobackup">
+          </div>
+        </div>
+        <div style="margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;gap:14px">
+          <button type="submit" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
+            Criar e baixar backup
+          </button>
+          <span class="mono" style="font-size:13.5px;color:#5A616C">backup-2026-10-30.rdb</span>
+        </div>
+      </form>
+
+      <!-- Restaurar -->
+      <form class="sep">
+        <h3 style="margin:0;font-size:17px;font-weight:600">Restaurar backup</h3>
+
+        <div style="margin-top:14px;display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid #D9A3AC;border-radius:12px;background:#FBECEF;color:#6E1422">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:1px"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 10v4"/><path d="M12 17.5h.01"/></svg>
+          <div style="font-size:14.5px"><strong style="font-weight:600">Isso substitui todos os dados atuais</strong> (doadores, usuário e configurações) pelos do backup. Crie um backup antes, se quiser guardar o que existe agora.</div>
+        </div>
+
+        <div class="g2" style="margin-top:18px">
+          <div>
+            <span class="lbl">Arquivo de backup</span>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <button type="button" class="btn btn-secondary">Escolher arquivo</button>
+              <span class="mono" style="font-size:13.5px;color:#3C424B;overflow-wrap:anywhere">backup-2026-10-18.rdb</span>
+            </div>
+          </div>
+          <div>
+            <label class="lbl" for="rs-senha">Senha do backup</label>
+            <input id="rs-senha" class="field" type="password" autocomplete="off" value="senhadobackup">
+          </div>
+        </div>
+
+        <div style="margin-top:18px">
+          <button type="submit" class="btn btn-danger">Restaurar backup</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- CSV -->
+    <section class="card" style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px">
+      <div style="max-width:560px">
+        <h2 class="h2" style="font-size:18px">Passar só os doadores para outra instalação?</h2>
+        <p class="sub">Use o CSV no menu <strong style="font-weight:600">Arquivos</strong> da lista de doadores. Ele junta os cadastros novos aos que já existem, sem apagar nada, e não leva senha nem configurações.</p>
+      </div>
+      <a href="Main.dc.html" class="btn btn-secondary">Ir para a lista</a>
+    </section>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Editar doador</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7}
+a{color:#B3243A}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:10px;font:600 14.5px 'Instrument Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;border:1px solid transparent;box-sizing:border-box}
+.btn-primary{background:#B3243A;color:#fff}
+.btn-primary:hover{background:#8F1B2D}
+.btn-ghost{background:transparent;color:#5A616C}
+.btn-ghost:hover{background:#EBEDF0;color:#1A1D23}
+.btn-secondary{background:#fff;color:#1A1D23;border-color:#8C939E}
+.btn-secondary:hover{background:#EBEDF0}
+.lbl{display:block;margin:0 0 6px;font-size:13.5px;font-weight:600;color:#3C424B}
+.field{width:100%;box-sizing:border-box;height:46px;padding:0 14px;border:1px solid #8C939E;border-radius:10px;background:#fff;font:400 15.5px 'Instrument Sans',system-ui,sans-serif;color:#1A1D23}
+.field:focus{outline:2px solid #B3243A;outline-offset:1px;border-color:#B3243A}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:15px}
+.hint{margin:6px 0 0;font-size:13px;color:#5A616C}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.s2{grid-column:span 2}
+.s4{grid-column:span 4}
+.pill{position:relative;display:inline-block}
+.pill input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.pill span{display:inline-flex;align-items:center;justify-content:center;min-width:54px;height:46px;padding:0 14px;border:1px solid #8C939E;border-radius:10px;background:#fff;font:600 15px 'IBM Plex Mono',ui-monospace,monospace;color:#1A1D23;box-sizing:border-box}
+.pill:hover span{background:#F4F5F7}
+.pill input:checked + span{background:#B3243A;border-color:#B3243A;color:#fff}
+.pill input:focus-visible + span{outline:2px solid #B3243A;outline-offset:2px}
+button:focus-visible,a:focus-visible{outline:2px solid #B3243A;outline-offset:2px}
+@media (max-width:760px){.g4{grid-template-columns:minmax(0,1fr)}.s2,.s4{grid-column:auto}}
+</style>
+</helmet>
+<div style="min-height:1100px;background:#F4F5F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#1A1D23;font-size:15px;line-height:1.45">
+
+  <header style="background:#fff;border-bottom:1px solid #E2E5E9">
+    <div style="max-width:1120px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:34px;height:34px;border-radius:9px;background:#B3243A;color:#fff;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c3.4 4.2 6 7.2 6 10.6a6 6 0 0 1-12 0c0-3.4 2.6-6.4 6-10.6Z" fill="currentColor"/></svg>
+        </div>
+        <span style="font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em">Registro de Doadores</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:14px;color:#5A616C">Admin</span>
+        <button type="button" class="btn btn-ghost" style="min-height:44px;padding:0 12px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H5v16h5"/><path d="m15 8 4 4-4 4"/><path d="M19 12H9"/></svg>
+          Sair
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:920px;margin:0 auto;padding:24px 24px 56px">
+
+    <a href="Main.dc.html" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#5A616C;font-size:14.5px;font-weight:500;text-decoration:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg>
+      Voltar para doadores
+    </a>
+
+    <form style="margin-top:8px;background:#fff;border:1px solid #E2E5E9;border-radius:16px;padding:36px 40px 32px">
+
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px">
+        <div>
+          <h1 style="margin:0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:32px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">Editar doador</h1>
+          <p style="margin:8px 0 0;color:#5A616C;font-size:14.5px">Cadastrado em 12/08/2026 · Última alteração em 30/10/2026</p>
+        </div>
+      </div>
+
+      <section style="margin-top:32px">
+        <h2 style="margin:0 0 16px;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.01em">Dados pessoais</h2>
+        <div class="g4">
+          <div class="s4">
+            <label class="lbl" for="nome">Nome completo</label>
+            <input id="nome" class="field" type="text" value="Helena Duarte Campos" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="cpf">CPF</label>
+            <input id="cpf" class="field mono" type="text" inputmode="numeric" value="214.380.917-52" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="rg">RG</label>
+            <input id="rg" class="field mono" type="text" value="MG-18.442.906" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="nasc">Data de nascimento</label>
+            <input id="nasc" class="field mono" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" value="14/03/1991" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="peso">Peso</label>
+            <div style="position:relative">
+              <input id="peso" class="field mono" type="text" inputmode="decimal" value="62,5" autocomplete="off" style="padding-right:44px">
+              <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:14px;color:#5A616C">kg</span>
+            </div>
+          </div>
+          <div class="s2">
+            <label class="lbl" for="genero">Gênero</label>
+            <select id="genero" class="field">
+              <option>Masculino</option>
+              <option selected>Feminino</option>
+            </select>
+          </div>
+          <div class="s2">
+            <label class="lbl" for="civil">Estado civil</label>
+            <select id="civil" class="field">
+              <option>Solteiro(a)</option>
+              <option selected>Casado(a)</option>
+              <option>Separado(a)</option>
+              <option>Divorciado(a)</option>
+              <option>Viúvo(a)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:32px;padding-top:28px;border-top:1px solid #E2E5E9">
+        <h2 style="margin:0 0 16px;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.01em">Grupo sanguíneo e contato</h2>
+        <fieldset style="border:0;padding:0;margin:0">
+          <legend class="lbl" style="padding:0">Grupo sanguíneo</legend>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <label class="pill"><input type="radio" name="gs" value="A+"><span>A+</span></label>
+            <label class="pill"><input type="radio" name="gs" value="B+"><span>B+</span></label>
+            <label class="pill"><input type="radio" name="gs" value="AB+"><span>AB+</span></label>
+            <label class="pill"><input type="radio" name="gs" value="O+" checked><span>O+</span></label>
+            <label class="pill"><input type="radio" name="gs" value="A-"><span>A-</span></label>
+            <label class="pill"><input type="radio" name="gs" value="B-"><span>B-</span></label>
+            <label class="pill"><input type="radio" name="gs" value="AB-"><span>AB-</span></label>
+            <label class="pill"><input type="radio" name="gs" value="O-"><span>O-</span></label>
+            <label class="pill"><input type="radio" name="gs" value="FO-"><span>Falso O-</span></label>
+            <label class="pill"><input type="radio" name="gs" value="SD"><span>Sangue dourado</span></label>
+          </div>
+        </fieldset>
+        <div class="g4" style="margin-top:20px">
+          <div class="s2">
+            <label class="lbl" for="cel">Celular</label>
+            <input id="cel" class="field mono" type="tel" inputmode="tel" value="(34) 90000-0101" autocomplete="off">
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:32px;padding-top:28px;border-top:1px solid #E2E5E9">
+        <h2 style="margin:0 0 16px;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.01em">Endereço</h2>
+        <div class="g4">
+          <div>
+            <label class="lbl" for="cep">CEP</label>
+            <input id="cep" class="field mono" type="text" inputmode="numeric" value="38400-100" autocomplete="off">
+            <p class="hint">Preenche o endereço sozinho.</p>
+          </div>
+          <div class="s2">
+            <label class="lbl" for="logr">Logradouro</label>
+            <input id="logr" class="field" type="text" value="Rua das Acácias" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="num">Número</label>
+            <input id="num" class="field mono" type="text" value="245" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="comp">Complemento</label>
+            <input id="comp" class="field" type="text" value="Apto 302" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="bairro">Bairro</label>
+            <input id="bairro" class="field" type="text" value="Centro" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="cidade">Cidade</label>
+            <input id="cidade" class="field" type="text" value="Uberlândia" autocomplete="off">
+          </div>
+          <div>
+            <label class="lbl" for="uf">Estado</label>
+            <select id="uf" class="field">
+              <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option selected>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <div style="margin-top:36px;padding-top:24px;border-top:1px solid #E2E5E9;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:12px">
+        <a class="btn btn-ghost" href="Main.dc.html">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Salvar alterações</button>
+      </div>
+
+    </form>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

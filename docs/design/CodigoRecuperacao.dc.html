@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Código de recuperação</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F5F7}
+a{color:#B3243A}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:10px;font:600 14.5px 'Instrument Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;border:1px solid transparent;box-sizing:border-box}
+.btn-primary{background:#B3243A;color:#fff}
+.btn-primary:hover{background:#8F1B2D}
+.btn-disabled{background:#E2E5E9;color:#6B727D;cursor:not-allowed}
+.btn-secondary{background:#fff;color:#1A1D23;border-color:#8C939E}
+.btn-secondary:hover{background:#EBEDF0}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid #B3243A;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height:760px;background:#F4F5F7;font-family:'Instrument Sans',system-ui,sans-serif;color:#1A1D23;font-size:15px;line-height:1.45;display:flex;align-items:center;justify-content:center;padding:48px 24px;box-sizing:border-box">
+
+  <main style="width:100%;max-width:560px">
+
+    <div style="background:#fff;border:1px solid #E2E5E9;border-radius:16px;padding:36px 36px 32px">
+
+      <div style="display:flex;align-items:center;gap:10px;color:#B3243A">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 8.2-8.2"/><path d="m16 7 3 3"/><path d="m14 9 2 2"/></svg>
+        <span style="font-size:13.5px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase">Passo final</span>
+      </div>
+
+      <h1 style="margin:10px 0 0;font-family:'Bricolage Grotesque','Instrument Sans',system-ui,sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;text-wrap:balance">Guarde seu código de recuperação</h1>
+      <p style="margin:12px 0 0;color:#3C424B;font-size:15px">Se esquecer a senha, este código permite criar uma nova sem depender de ninguém. <strong>Ele aparece só desta vez</strong> e não fica salvo em lugar nenhum do programa.</p>
+
+      <div style="margin-top:24px;padding:22px 20px;border:1px dashed #8C939E;border-radius:12px;background:#FAFAFB;text-align:center">
+        <div style="font:600 12px 'Instrument Sans',system-ui,sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:#5A616C">Seu código</div>
+        <div style="margin-top:10px;font:600 20px 'IBM Plex Mono',ui-monospace,monospace;line-height:1.5;overflow-wrap:normal" aria-label="Código de recuperação">marujo-cobalto-pente-lucro-varanda-tijolo</div>
+      </div>
+
+      <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+        <button type="button" class="btn btn-secondary" onClick="{{ copy }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+          {{ copyLabel }}
+        </button>
+        <button type="button" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V4h10v5"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v6H7z"/></svg>
+          Imprimir
+        </button>
+      </div>
+
+      <ul style="margin:22px 0 0;padding:0 0 0 20px;color:#3C424B;font-size:14.5px;display:grid;gap:6px">
+        <li>Anote em papel ou imprima, e guarde em um lugar seguro.</li>
+        <li>Quem tiver este código consegue trocar a senha. Não deixe à vista.</li>
+        <li>Perdeu o código? Dá para gerar outro em Configurações, estando logado.</li>
+      </ul>
+
+      <label style="margin-top:24px;display:flex;align-items:flex-start;gap:12px;min-height:44px;cursor:pointer">
+        <input type="checkbox" onChange="{{ toggle }}" style="width:22px;height:22px;margin:1px 0 0;accent-color:#B3243A;flex:none">
+        <span style="font-size:15px;font-weight:500">Anotei o código em um lugar seguro</span>
+      </label>
+
+      <div style="margin-top:20px">
+        <sc-if value="{{ ok }}" hint-placeholder-val="{{ false }}">
+          <a href="Main.dc.html" class="btn btn-primary" style="width:100%">Continuar</a>
+        </sc-if>
+        <sc-if value="{{ notOk }}" hint-placeholder-val="{{ true }}">
+          <span class="btn btn-disabled" style="width:100%" aria-disabled="true">Continuar</span>
+        </sc-if>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":760}}'>
+class Component extends DCLogic {
+  state = { checked: false, copied: false };
+  renderVals() {
+    return {
+      ok: this.state.checked,
+      notOk: !this.state.checked,
+      copyLabel: this.state.copied ? 'Copiado' : 'Copiar código',
+      toggle: () => this.setState({ checked: !this.state.checked }),
+      copy: () => this.setState({ copied: true })
+    };
+  }
+}
+</script>
+</body>
+</html>
