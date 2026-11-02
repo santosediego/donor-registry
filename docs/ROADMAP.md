@@ -19,7 +19,6 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
   - **4.3** Atualizar e excluir. Pronto quando: o roteiro de Postman escrito pelo Diego passa de ponta a ponta.
 - [ ] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA.
   - Pronto quando: cada cenário tem teste, e o Diego provou que cada teste falha quando o código é quebrado de propósito.
-
 - [ ] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
   - Pronto quando: um PR com teste quebrado fica bloqueado para merge.
 - [ ] **7. Versionamento:** SemVer automatizado com release-please (gera o PR de release, o `CHANGELOG.md`, a tag `vX.Y.Z` e o GitHub Release a partir dos commits). Decidir aqui o tipo de merge (squash ou merge commit) e o comportamento nas versões `0.x`.
