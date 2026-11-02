@@ -31,6 +31,7 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 
 - `main` = produção; `dev` = integração. As duas só recebem código por PR.
 - Branch por parte, saindo da `dev`: `ia/part-NN-short-description`. PR de volta para a `dev`.
+- Título do PR em Conventional Commits, em inglês (ex.: `feat(donor): add Donor entity`); o "Parte N" vai na descrição.
 - **Nunca** faça push direto em `main` ou `dev`, force push, nem merge de PR. Quem faz merge é o Diego.
 
 ## Versionamento
@@ -53,9 +54,11 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - **Sem Lombok e sem MapStruct:** construtores, getters e setters escritos à mão. O DTO tem um construtor que recebe a entidade (`new DonorDTO(entity)`), e o service tem um método `copyDtoToEntity`.
 - **Injeção por construtor** (não use `@Autowired` em atributo). Entidade nunca sai direto na API: use DTO.
 - Listagens: `Page<DTO> findAllPaged(Pageable, filtros)`; o `Resource` recebe `page`, `size`, `direction`, `orderBy`.
+- **Tabelas** se chamam `tb_` + nome (`tb_donor`), com colunas em `snake_case`. A entidade guarda o enum como `String` com o código curto (`id`), sem conversor JPA.
+- **`createdAt` e `updatedAt`** (`Instant`) usam `@PrePersist` e `@PreUpdate`. `Instant` é gravado como `TIMESTAMP` sem fuso, em UTC (`hibernate.jdbc.time_zone=UTC`).
 - **Erros:** exceções de serviço (`ResourceNotFoundException`, `DatabaseException`, ...) tratadas num `@ControllerAdvice` (`ResourceExceptionHandler`) que devolve `StandardError`; validação de campos devolve `ValidationError` com 422.
-- **Enums:** código curto e descrição em português (como `Role`: campos `id` e `description`), persistidos como texto, nunca ordinal.
-- **Properties:** `application.properties` + perfis `test` (H2 em memória, `MODE=PostgreSQL`), `dev` e `prod` (PostgreSQL). O perfil padrão é `dev`; os testes ativam `test` com `@ActiveProfiles("test")`. **Sem valor padrão para segredo ou senha** em nenhum perfil: se faltar variável de ambiente, a aplicação falha ao subir (a mensagem de erro pode ser indireta; ver `.env.example`). `spring.jpa.open-in-view=false`.
+- **Enums:** código curto e descrição em português (campos `id` e `description`, mais o método estático `fromId`), persistidos como texto, nunca ordinal.
+- **Properties:** `application.properties` + perfis `test` (H2 em memória, `MODE=PostgreSQL`), `dev` e `prod` (PostgreSQL). O perfil padrão é `dev`; os testes ativam `test` com `@ActiveProfiles("test")`. **Sem valor padrão para segredo ou senha** em nenhum perfil com PostgreSQL (o H2 em memória do perfil `test` usa `sa` e senha vazia): se faltar variável de ambiente, a aplicação falha ao subir (a mensagem de erro pode ser indireta; ver `.env.example`). `spring.jpa.open-in-view=false`.
 - **Banco:** só Liquibase, também nos testes (o perfil `test` não desliga o Liquibase). Arquivos numerados (`001-create-donor-table.yaml`), incluídos no `db.changelog-master.yaml`; dados de exemplo em changeSet com contexto `dev`/`test`, nunca em `prod`. **Nunca edite um changeSet já aplicado**; crie outro. Schema `public` padrão. Sem `columnDefinition` específico de banco.
 - **Frontend (quando chegar):** React + TypeScript + Vite em `frontweb/`. **Use `yarn`, nunca `npm`.**
 
