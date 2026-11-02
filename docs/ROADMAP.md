@@ -8,7 +8,7 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
 - [ ] **1. Criar o projeto:** esqueleto Spring Boot em `backend/` gerado pelo Spring Initializr.
   - Pronto quando: o build passa e a seção "Comandos" do `CLAUDE.md` está preenchida com comandos reais.
 - [ ] **2. Configurar:** Liquibase, properties (principal, `test`, `dev`, `prod`), PostgreSQL local para o perfil `dev`, tratamento global de exceções (`StandardError`, `ResourceNotFoundException`, `ResourceExceptionHandler`).
-  - Pronto quando: sobe em `dev` (PostgreSQL) e em `test` (H2), as duas rodando o Liquibase; um endpoint de exemplo devolve 404 no formato padrão.
+  - Pronto quando: sobe em `dev` (PostgreSQL) e em `test` (H2), as duas rodando o Liquibase; um endpoint de exemplo devolve 404 no formato padrão; `.env` está no `.gitignore` e existe um `.env.example` sem valores reais (adiado da Parte 1).
 - [ ] **3. Entidades:** `Donor`, `Address` e enums, com os changeSets do Liquibase.
   - Pronto quando: as tabelas são criadas pelo Liquibase (dev e test) e a aplicação sobe com `ddl-auto=validate`.
 - [ ] **4. CRUD de doador:** DTOs, validações, busca paginada (por nome e CPF).
