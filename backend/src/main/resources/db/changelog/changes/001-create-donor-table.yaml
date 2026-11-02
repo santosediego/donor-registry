@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-donor-table
+      author: santosediego
+      changes:
+        - createTable:
+            tableName: tb_donor
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_tb_donor
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(120)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cpf
+                  type: VARCHAR(11)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: uk_tb_donor_cpf
+              - column:
+                  name: rg
+                  type: VARCHAR(20)
+              - column:
+                  name: birth_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gender
+                  type: VARCHAR(2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: marital_status
+                  type: VARCHAR(3)
+              - column:
+                  name: blood_type
+                  type: VARCHAR(3)
+              - column:
+                  name: phone
+                  type: VARCHAR(11)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weight
+                  type: NUMERIC(4,1)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
