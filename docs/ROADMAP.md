@@ -12,12 +12,12 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
   - O console do H2 fica até o fim da Parte 4, ligado só no perfil `test`; depois sai do `pom.xml` (é superfície desnecessária num sistema com dados sensíveis).
   - Pronto quando: `./mvnw test` passa com o Liquibase rodando em H2; `APP_PROFILE=test ./mvnw spring-boot:run` sobe e o `/h2-console` mostra `databasechangelog` e `databasechangeloglock`; `APP_PROFILE=prod ./mvnw spring-boot:run` sem variáveis falha ao subir; o `dev` (PostgreSQL) sobe com o `.env` preenchido; `.env` está no `.gitignore` e existe `.env.example` sem valores reais.
 - [ ] **3. Entidades:** `Donor`, `Address` e enums, com os changeSets do Liquibase.
-  - **3.1** `Donor`, enums e changeSet `001`. Pronto quando: `./mvnw test` passa com o `ddl-auto=validate` rodando contra a tabela `tb_donor` criada pelo Liquibase, e o `/h2-console` mostra `TB_DONOR` com a restrição única do `cpf`.
-  - **3.2** `Address` (1:1 com `Donor`, `cascade` e `orphanRemoval`) e changeSet `002`. Pronto quando: a tabela do endereço é criada pelo Liquibase e a aplicação sobe com `validate`.
+  - [x] **3.1** `Donor`, enums e changeSet `001`. Pronto quando: `./mvnw test` passa com o `ddl-auto=validate` rodando contra a tabela `tb_donor` criada pelo Liquibase, e o `/h2-console` mostra `TB_DONOR` com a restrição única do `cpf`.
+  - **3.2** `Address` (1:1 opcional com `Donor`; `Address` é o lado dono, com `donor_id`) e changeSet `002`. Pronto quando: `./mvnw test` passa com o `ddl-auto=validate` contra as tabelas criadas pelo Liquibase; o `/h2-console` mostra `TB_ADDRESS` com `DONOR_ID` obrigatório e único e a chave estrangeira para `TB_DONOR` (`ON DELETE CASCADE`), `TB_DONOR` sem mudanças, e o `DATABASECHANGELOG` com 2 registros.
   - **3.3** Dados de exemplo nos contextos `dev` e `test`, com CPFs fictícios válidos. `created_at` é `NOT NULL` e o Liquibase não passa pelo `@PrePersist`, então os dados de exemplo precisam informar `created_at` explicitamente. Pronto quando: `dev` e `test` sobem com os doadores de exemplo e `prod` não os recebe.
 - [ ] **4. CRUD de doador:**
   - **4.1** Criar e buscar por id, com DTOs, validações e tratamento global de exceções (`StandardError`, `ResourceNotFoundException`, `ResourceExceptionHandler`). Conferir também o `createdAt` contra o relógio. Pronto quando: o POST cria, o GET por id devolve o doador e um id inexistente devolve 404 no formato padrão.
-  - **4.2** Listagem paginada com filtro por nome e CPF. Pronto quando: a busca pagina, ordena e filtra.
+  - **4.2** Listagem paginada com filtro por nome e CPF. Pronto quando: a busca pagina, ordena e filtra; a busca usa `LEFT JOIN FETCH`, então doador sem endereço aparece nos resultados, sem consultas em excesso (N+1).
   - **4.3** Atualizar e excluir. Pronto quando: o roteiro de Postman escrito pelo Diego passa de ponta a ponta.
 - [ ] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA.
   - Pronto quando: cada cenário tem teste, e o Diego provou que cada teste falha quando o código é quebrado de propósito.
