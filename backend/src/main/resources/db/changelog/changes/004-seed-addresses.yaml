@@ -1,0 +1,252 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-seed-addresses
+      author: santosediego
+      context: dev,test
+      changes:
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Rua Alfa Centauri"
+              - column:
+                  name: street_number
+                  value: "74"
+              - column:
+                  name: complement
+                  value: "Apto 101"
+              - column:
+                  name: neighborhood
+                  value: "Centro"
+              - column:
+                  name: zip_code
+                  value: "38400074"
+              - column:
+                  name: city
+                  value: "Uberlândia"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000007447')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Avenida Voyager"
+              - column:
+                  name: street_number
+                  value: "1701"
+              - column:
+                  name: neighborhood
+                  value: "Jardim Estelar"
+              - column:
+                  name: zip_code
+                  value: "38900170"
+              - column:
+                  name: city
+                  value: "Araguari"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000170275')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Rua da Federação"
+              - column:
+                  name: street_number
+                  value: "40"
+              - column:
+                  name: zip_code
+                  value: "38500040"
+              - column:
+                  name: city
+                  value: "Monte Carmelo"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000004006')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Rua Cyberdyne"
+              - column:
+                  name: street_number
+                  value: "1984"
+              - column:
+                  name: complement
+                  value: "Casa 2"
+              - column:
+                  name: neighborhood
+                  value: "Bairro Futuro"
+              - column:
+                  name: zip_code
+                  value: "38700198"
+              - column:
+                  name: city
+                  value: "Patos de Minas"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000198447')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Avenida Enterprise"
+              - column:
+                  name: street_number
+                  value: "1987"
+              - column:
+                  name: neighborhood
+                  value: "Distrito Orbital"
+              - column:
+                  name: zip_code
+                  value: "38010987"
+              - column:
+                  name: city
+                  value: "Uberaba"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000198790')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Rua Nostromo"
+              - column:
+                  name: street_number
+                  value: "500"
+              - column:
+                  name: complement
+                  value: "Fundos"
+              - column:
+                  name: neighborhood
+                  value: "Vila Galáxia"
+              - column:
+                  name: zip_code
+                  value: "39400500"
+              - column:
+                  name: city
+                  value: "Montes Claros"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000050024')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Avenida Tardis"
+              - column:
+                  name: street_number
+                  value: "11"
+              - column:
+                  name: complement
+                  value: "Sala 3"
+              - column:
+                  name: zip_code
+                  value: "38405011"
+              - column:
+                  name: city
+                  value: "Uberlândia"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000170194')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Rua Kobayashi Maru"
+              - column:
+                  name: street_number
+                  value: "13"
+              - column:
+                  name: neighborhood
+                  value: "Centro"
+              - column:
+                  name: zip_code
+                  value: "38900013"
+              - column:
+                  name: city
+                  value: "Araguari"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000001325')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Rua Skynet"
+              - column:
+                  name: street_number
+                  value: "99"
+              - column:
+                  name: complement
+                  value: "Bloco B"
+              - column:
+                  name: neighborhood
+                  value: "Jardim das Estrelas"
+              - column:
+                  name: zip_code
+                  value: "38010099"
+              - column:
+                  name: city
+                  value: "Uberaba"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000009903')"
+        - insert:
+            tableName: tb_address
+            columns:
+              - column:
+                  name: street
+                  value: "Avenida Serenity"
+              - column:
+                  name: street_number
+                  value: "900"
+              - column:
+                  name: zip_code
+                  value: "39400900"
+              - column:
+                  name: city
+                  value: "Montes Claros"
+              - column:
+                  name: state
+                  value: "MG"
+              - column:
+                  name: donor_id
+                  valueComputed: "(SELECT id FROM tb_donor WHERE cpf = '00000090085')"
