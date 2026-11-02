@@ -6,11 +6,13 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -55,6 +57,10 @@ public class Donor implements Serializable {
 	@Column(name = "weight", precision = 4, scale = 1)
 	private BigDecimal weight;
 
+	// Inverse side of the 1:1 relation (optional): the foreign key is tb_address.donor_id
+	@OneToOne(mappedBy = "donor", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Address address;
+
 	@Column(name = "created_at", updatable = false)
 	private Instant createdAt;
 
@@ -65,8 +71,8 @@ public class Donor implements Serializable {
 	}
 
 	public Donor(Long id, String name, String cpf, String rg, LocalDate birthDate, String gender,
-			String maritalStatus, String bloodType, String phone, BigDecimal weight, Instant createdAt,
-			Instant updatedAt) {
+			String maritalStatus, String bloodType, String phone, BigDecimal weight, Address address,
+			Instant createdAt, Instant updatedAt) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
@@ -77,6 +83,7 @@ public class Donor implements Serializable {
 		this.bloodType = bloodType;
 		this.phone = phone;
 		this.weight = weight;
+		setAddress(address);
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
@@ -159,6 +166,18 @@ public class Donor implements Serializable {
 
 	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	// Keeps both sides in sync: without this, address.donor stays null and donor_id fails on save
+	public void setAddress(Address address) {
+		this.address = address;
+		if (address != null) {
+			address.setDonor(this);
+		}
 	}
 
 	public Instant getCreatedAt() {
