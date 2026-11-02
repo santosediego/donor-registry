@@ -33,6 +33,12 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - Branch por parte, saindo da `dev`: `ia/part-NN-short-description`. PR de volta para a `dev`.
 - **Nunca** faça push direto em `main` ou `dev`, force push, nem merge de PR. Quem faz merge é o Diego.
 
+## Versionamento
+
+- Versionamento semântico (`MAJOR.MINOR.PATCH`). A versão vive **só no `pom.xml`**. Enquanto for `0.x`, a API é considerada instável.
+- **Não altere a versão, crie tags nem edite `CHANGELOG.md` na mão.** Isso será automatizado (ver `docs/ROADMAP.md`, Parte 7).
+- O tipo do commit decide a versão, então use o tipo certo: `fix:` = patch, `feat:` = minor, `feat!:` ou rodapé `BREAKING CHANGE:` = major. `docs:`, `test:`, `refactor:` e `chore:` não geram versão. Não rotule funcionalidade nova como `chore:`.
+
 ## Idioma
 
 - **Inglês:** código, entidades, campos, pacotes, branches e commits (`Donor`, `birthDate`). `cpf` e `rg` ficam como estão (termos brasileiros).
@@ -49,7 +55,7 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - Listagens: `Page<DTO> findAllPaged(Pageable, filtros)`; o `Resource` recebe `page`, `size`, `direction`, `orderBy`.
 - **Erros:** exceções de serviço (`ResourceNotFoundException`, `DatabaseException`, ...) tratadas num `@ControllerAdvice` (`ResourceExceptionHandler`) que devolve `StandardError`; validação de campos devolve `ValidationError` com 422.
 - **Enums:** código curto e descrição em português (como `Role`: campos `id` e `description`), persistidos como texto, nunca ordinal.
-- **Properties:** `application.properties` + perfis `test` (H2 em memória, `MODE=PostgreSQL`), `dev` e `prod` (PostgreSQL). O perfil padrão é `dev`; os testes ativam `test` com `@ActiveProfiles("test")`. **Sem valor padrão para segredo ou senha** em nenhum perfil: se faltar variável de ambiente, a aplicação falha ao subir. `spring.jpa.open-in-view=false`.
+- **Properties:** `application.properties` + perfis `test` (H2 em memória, `MODE=PostgreSQL`), `dev` e `prod` (PostgreSQL). O perfil padrão é `dev`; os testes ativam `test` com `@ActiveProfiles("test")`. **Sem valor padrão para segredo ou senha** em nenhum perfil: se faltar variável de ambiente, a aplicação falha ao subir (a mensagem de erro pode ser indireta; ver `.env.example`). `spring.jpa.open-in-view=false`.
 - **Banco:** só Liquibase, também nos testes (o perfil `test` não desliga o Liquibase). Arquivos numerados (`001-create-donor-table.yaml`), incluídos no `db.changelog-master.yaml`; dados de exemplo em changeSet com contexto `dev`/`test`, nunca em `prod`. **Nunca edite um changeSet já aplicado**; crie outro. Schema `public` padrão. Sem `columnDefinition` específico de banco.
 - **Frontend (quando chegar):** React + TypeScript + Vite em `frontweb/`. **Use `yarn`, nunca `npm`.**
 
@@ -64,7 +70,8 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 Rode a partir de `backend/`. Use o Maven Wrapper (`./mvnw`, ou `mvnw.cmd` no Windows), não um Maven instalado.
 
 - Testes do backend: `./mvnw test`
-- Subir o backend em dev: `./mvnw spring-boot:run` (até a Parte 2 não há perfil `dev`; sobe com H2 em memória configurado automaticamente, na porta 8080)
+- Subir o backend em dev: `./mvnw spring-boot:run` (PostgreSQL local; exige `backend/.env` preenchido a partir do `.env.example`, com `DB_URL`, `DB_USERNAME` e `DB_PASSWORD`)
+- Subir para demonstração, sem PostgreSQL: `APP_PROFILE=test ./mvnw spring-boot:run` (H2 em memória, porta 8080, console em `/h2-console`)
 - Build: `./mvnw clean package` (roda os testes e gera o jar em `backend/target/`)
 
 ## Antes de abrir o PR
