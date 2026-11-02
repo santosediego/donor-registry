@@ -3,3 +3,7 @@ databaseChangeLog:
       file: db/changelog/changes/001-create-donor-table.yaml
   - include:
       file: db/changelog/changes/002-create-address-table.yaml
+  - include:
+      file: db/changelog/changes/003-seed-donors.yaml
+  - include:
+      file: db/changelog/changes/004-seed-addresses.yaml
