@@ -61,11 +61,11 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 
 ## Comandos
 
-> Preencher na Parte 1, depois de gerar o projeto. Não invente comandos antes disso.
+Rode a partir de `backend/`. Use o Maven Wrapper (`./mvnw`, ou `mvnw.cmd` no Windows), não um Maven instalado.
 
-- Testes do backend: _a preencher_
-- Subir o backend em dev: _a preencher_
-- Build: _a preencher_
+- Testes do backend: `./mvnw test`
+- Subir o backend em dev: `./mvnw spring-boot:run` (até a Parte 2 não há perfil `dev`; sobe com H2 em memória configurado automaticamente, na porta 8080)
+- Build: `./mvnw clean package` (roda os testes e gera o jar em `backend/target/`)
 
 ## Antes de abrir o PR
 

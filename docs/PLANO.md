@@ -6,7 +6,7 @@ Documento de trabalho para o desenvolvimento do projeto, pensado para ser usado 
 
 - O Registro de Doadores é uma releitura, atualização e melhoria de um projeto antigo, feito pelo autor para uma ONG. O objetivo deste repositório é **aprender e praticar a delegação do desenvolvimento para a IA** (Claude e Claude Code), em vez de desenvolver sozinho.
 - O sistema original foi pensado para rodar localmente na máquina do cliente, e o CSV existia para levar dados de uma instalação para outra. O projeto novo continua podendo rodar assim, mas também **precisa rodar hospedado** (servidor ou nuvem). Não há suporte a sistemas já descontinuados (Windows 7, por exemplo): quem estiver neles hospeda o sistema em outro lugar.
-- **Stack do projeto novo:** Spring Boot 4.1.2 (gerado pelo Spring Initializr; `groupId` `com.santosediego`, `artifactId` `registro-de-doadores`), Java 25 (LTS), JPA, Liquibase, H2 em arquivo ou PostgreSQL (ver perguntas em aberto), React com Vite e TypeScript.
+- **Stack do projeto novo:** Spring Boot 4.1.2 (gerado pelo Spring Initializr; `groupId` `com.santosediego`, `artifactId` `donor-registry`), Java 25 (LTS), JPA, Liquibase, H2 em arquivo ou PostgreSQL (ver perguntas em aberto), React com Vite e TypeScript.
 - **Repositório novo, público, começando do zero.** O código antigo não é usado. As regras de negócio e os problemas que o projeto antigo teve estão resumidos na seção 5, e cada problema vira um teste no projeto novo.
 
 ## 2. Decisões já tomadas
@@ -46,7 +46,7 @@ Combinados entre o autor e a IA:
 ## 4. Ordem dos passos
 
 ### Passo 1: base e testes
-- Gerar o projeto (Spring Initializr), com pacote `com.santosediego.registrodedoadores`, perfis de `properties` (test, dev, prod) e CI no GitHub Actions.
+- Gerar o projeto (Spring Initializr), com pacote `com.santosediego.donorregistry`, perfis de `properties` (test, dev, prod) e CI no GitHub Actions.
 - Escrever os cenários (visão de QA): cadastrar, editar, excluir, buscar, paginar, exportar CSV, importar CSV, gerar relatório, login.
 - Transformar cada item da seção 5 em um teste (que falha até a funcionalidade existir).
 
@@ -158,7 +158,7 @@ Pontos de atenção do backup:
 
 ## 7. Modelagem
 
-Pacote `com.santosediego.registrodedoadores`, consistente com o `artifactId` `registro-de-doadores`.
+Pacote `com.santosediego.donorregistry`, consistente com o `artifactId` `donor-registry`.
 
 ### Doador
 | Campo | Tipo | Observação |
