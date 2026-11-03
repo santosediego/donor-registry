@@ -6,7 +6,7 @@ Documento de trabalho para o desenvolvimento do projeto, pensado para ser usado 
 
 - O Registro de Doadores é uma releitura, atualização e melhoria de um projeto antigo, feito pelo autor para uma ONG. O objetivo deste repositório é **aprender e praticar a delegação do desenvolvimento para a IA** (Claude e Claude Code), em vez de desenvolver sozinho.
 - O sistema original foi pensado para rodar localmente na máquina do cliente, e o CSV existia para levar dados de uma instalação para outra. O projeto novo continua podendo rodar assim, mas também **precisa rodar hospedado** (servidor ou nuvem). Não há suporte a sistemas já descontinuados (Windows 7, por exemplo): quem estiver neles hospeda o sistema em outro lugar.
-- **Stack do projeto novo:** Spring Boot 4.1.2 (gerado pelo Spring Initializr; `groupId` `com.santosediego`, `artifactId` `registro-de-doadores`), Java 25 (LTS), JPA/Hibernate, Liquibase, PostgreSQL (uso real; H2 em memória só nos testes), React com Vite e TypeScript no front (`frontweb/`).
+- **Stack do projeto novo:** Spring Boot 4.1.2 (gerado pelo Spring Initializr; `groupId` `com.santosediego`, `artifactId` `donor-registry`), Java 25 (LTS), JPA/Hibernate, Liquibase, PostgreSQL (uso real; H2 em memória só nos testes), React com Vite e TypeScript no front (`frontweb/`).
 - **Repositório novo, público, começando do zero.** O código antigo não é usado. As regras de negócio e os problemas que o projeto antigo teve estão resumidos na seção 5, e cada problema vira um teste no projeto novo.
 
 ## 2. Decisões já tomadas
@@ -172,7 +172,7 @@ Pontos de atenção do backup:
 
 ## 7. Modelagem
 
-Pacote `com.santosediego.registrodedoadores`, consistente com o `artifactId` `registro-de-doadores`. Nomes de classe, tabela e coluna em inglês; tabelas com prefixo `tb_` e colunas em `snake_case`.
+Pacote `com.santosediego.donorregistry`, consistente com o `artifactId` `donor-registry`. Nomes de classe, tabela e coluna em inglês; tabelas com prefixo `tb_` e colunas em `snake_case`.
 
 ### Donor (`tb_donor`)
 | Campo | Tipo | Observação |
