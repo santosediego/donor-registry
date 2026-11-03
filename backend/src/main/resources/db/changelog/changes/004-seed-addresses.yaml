@@ -65,6 +65,9 @@ databaseChangeLog:
                   name: street_number
                   value: "40"
               - column:
+                  name: neighborhood
+                  value: "Setor Federado"
+              - column:
                   name: zip_code
                   value: "38500040"
               - column:
@@ -167,6 +170,9 @@ databaseChangeLog:
                   name: complement
                   value: "Sala 3"
               - column:
+                  name: neighborhood
+                  value: "Vila Temporal"
+              - column:
                   name: zip_code
                   value: "38405011"
               - column:
@@ -238,6 +244,9 @@ databaseChangeLog:
               - column:
                   name: street_number
                   value: "900"
+              - column:
+                  name: neighborhood
+                  value: "Bairro Firefly"
               - column:
                   name: zip_code
                   value: "39400900"

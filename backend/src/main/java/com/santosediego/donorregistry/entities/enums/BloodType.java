@@ -1,5 +1,9 @@
 package com.santosediego.donorregistry.entities.enums;
 
+import java.util.Arrays;
+
+import com.santosediego.donorregistry.services.exceptions.InvalidEnumValueException;
+
 public enum BloodType {
 
 	A_POSITIVE("A+", "A+"),
@@ -38,6 +42,7 @@ public enum BloodType {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Invalid blood type: " + id);
+		throw new InvalidEnumValueException("tipo sanguíneo", id,
+				Arrays.stream(values()).map(BloodType::getId).toList());
 	}
 }

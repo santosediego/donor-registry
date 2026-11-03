@@ -56,7 +56,7 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - Listagens: `Page<DTO> findAllPaged(Pageable, filtros)`; o `Resource` recebe `page`, `size`, `direction`, `orderBy`.
 - **Tabelas** se chamam `tb_` + nome (`tb_donor`), com colunas em `snake_case`. A entidade guarda o enum como `String` com o código curto (`id`), sem conversor JPA.
 - **`createdAt` e `updatedAt`** (`Instant`) usam `@PrePersist` e `@PreUpdate`. `Instant` é gravado como `TIMESTAMP` sem fuso, em UTC (`hibernate.jdbc.time_zone=UTC`).
-- **Erros:** exceções de serviço (`ResourceNotFoundException`, `DatabaseException`, ...) tratadas num `@ControllerAdvice` (`ResourceExceptionHandler`) que devolve `StandardError`; validação de campos devolve `ValidationError` com 422.
+- **Erros:** exceções de serviço (`ResourceNotFoundException`, `DatabaseException`, ...) tratadas num `@ControllerAdvice` (`ResourceExceptionHandler`) que devolve `StandardError`; validação de campos devolve `ValidationError` com 400.
 - **Endereço é opcional:** o doador pode não ter endereço (relação 1:1 opcional).
 - **Enums:** código curto e descrição em português (campos `id` e `description`, mais o método estático `fromId`), persistidos como texto, nunca ordinal.
 - **Properties:** `application.properties` + perfis `test` (H2 em memória, `MODE=PostgreSQL`), `dev` e `prod` (PostgreSQL). O perfil padrão é `dev`; os testes ativam `test` com `@ActiveProfiles("test")`. **Sem valor padrão para segredo ou senha** em nenhum perfil com PostgreSQL (o H2 em memória do perfil `test` usa `sa` e senha vazia): se faltar variável de ambiente, a aplicação falha ao subir (a mensagem de erro pode ser indireta; ver `.env.example`). `spring.jpa.open-in-view=false`.
