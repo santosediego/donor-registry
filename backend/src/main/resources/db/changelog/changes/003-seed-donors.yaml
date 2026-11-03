@@ -399,7 +399,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "Comandante Montgomery Scott"
+                  value: "Montgomery Scott"
               - column:
                   name: cpf
                   value: "00000004774"
