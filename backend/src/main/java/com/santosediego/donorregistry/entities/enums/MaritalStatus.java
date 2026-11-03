@@ -1,5 +1,9 @@
 package com.santosediego.donorregistry.entities.enums;
 
+import java.util.Arrays;
+
+import com.santosediego.donorregistry.services.exceptions.InvalidEnumValueException;
+
 public enum MaritalStatus {
 
 	SINGLE("SOL", "Solteiro"),
@@ -34,6 +38,7 @@ public enum MaritalStatus {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Invalid marital status: " + id);
+		throw new InvalidEnumValueException("estado civil", id,
+				Arrays.stream(values()).map(MaritalStatus::getId).toList());
 	}
 }

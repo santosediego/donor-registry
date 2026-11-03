@@ -1,5 +1,9 @@
 package com.santosediego.donorregistry.entities.enums;
 
+import java.util.Arrays;
+
+import com.santosediego.donorregistry.services.exceptions.InvalidEnumValueException;
+
 public enum Gender {
 
 	MALE("M", "Masculino"),
@@ -31,6 +35,7 @@ public enum Gender {
 				return value;
 			}
 		}
-		throw new IllegalArgumentException("Invalid gender: " + id);
+		throw new InvalidEnumValueException("gênero", id,
+				Arrays.stream(values()).map(Gender::getId).toList());
 	}
 }
