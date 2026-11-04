@@ -15,6 +15,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.santosediego.donorregistry.services.exceptions.DuplicateCpfException;
 import com.santosediego.donorregistry.services.exceptions.InvalidEnumValueException;
+import com.santosediego.donorregistry.services.exceptions.InvalidSortException;
 import com.santosediego.donorregistry.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,11 @@ public class ResourceExceptionHandler {
 
 	@ExceptionHandler(InvalidEnumValueException.class)
 	public ResponseEntity<StandardError> invalidEnum(InvalidEnumValueException e, HttpServletRequest request) {
+		return build(HttpStatus.BAD_REQUEST, "Requisição inválida", e.getMessage(), request);
+	}
+
+	@ExceptionHandler(InvalidSortException.class)
+	public ResponseEntity<StandardError> invalidSort(InvalidSortException e, HttpServletRequest request) {
 		return build(HttpStatus.BAD_REQUEST, "Requisição inválida", e.getMessage(), request);
 	}
 
