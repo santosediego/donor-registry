@@ -192,7 +192,7 @@ Pacote `com.santosediego.donorregistry`, consistente com o `artifactId` `donor-r
 | `updatedAt` | `Instant` | `@PreUpdate` |
 
 ### Address (`tb_address`)
-Relação 1:1 **opcional** com `Donor`: o `Address` é o lado dono, com a chave estrangeira `donor_id` (obrigatória, única, `ON DELETE CASCADE`). **Excluir o doador exclui o endereço** (`cascade` e `orphanRemoval` no `Donor`, mais o `ON DELETE CASCADE` no banco). O lado inverso não pode ser preguiçoso, então as buscas usam `LEFT JOIN FETCH`.
+Relação 1:1 **opcional** com `Donor`: o `Address` é o lado dono, com a chave estrangeira `donor_id` (obrigatória, única, `ON DELETE CASCADE`). **Excluir o doador exclui o endereço** (`cascade` e `orphanRemoval` no `Donor`, mais o `ON DELETE CASCADE` no banco). O lado inverso não pode ser preguiçoso. A listagem não carrega a entidade `Address`: usa `LEFT JOIN` com projeção direta no DTO (ver "Listagem e busca"); `LEFT JOIN FETCH` só serve onde a entidade inteira for necessária.
 
 | Campo | Tipo | Coluna | Observação |
 |-------|------|--------|------------|
@@ -228,9 +228,9 @@ Cada enum tem `id` (código curto) e `description` (rótulo em português), mais
 ### Listagem e busca (Parte 4.2)
 - **Endpoint:** `GET /donors?search=&page=&size=&sort=`. Resposta no envelope `PagedModel` do Spring (`content` e `page` com `size`, `number`, `totalElements`, `totalPages`). Cada item é um `DonorSummaryDTO`: `id`, `name`, `phone`, `cpf`, `rg`, `bloodType` (código curto) e `city` (nulo quando não há endereço). O endereço completo fica no `GET /donors/{id}` e no futuro relatório.
 - **Busca (`search`, opcional):** vazio ou ausente = sem filtro. Com valor, o doador entra se **qualquer** condição for verdadeira:
-  - **Nome:** termo (com `trim`) contido no nome, ambos passando por `TRANSLATE(LOWER(x), 'áàâãäéèêëíìîïóòôõöúùûüçñ', 'aaaaaeeeeiiiiooooouuuucn')`. `joao` acha `João` e `Joao`; `conceicao` acha `Conceição`. Sem coluna nova.
+  - **Nome:** termo (com `trim`) contido no nome, ambos passando por `LOWER(TRANSLATE(x, 'áàâãä…ñÁÀÂÃÄ…Ñ', 'aaaaa…nAAAAA…N'))` (a lista completa fica numa constante só, no código). O `TRANSLATE` vem antes do `LOWER` para não depender do locale do banco. `joao` acha `João` e `Joao`; `conceicao` acha `Conceição`. Sem coluna nova.
   - **CPF:** só quando o termo, descontados `.`, `-` e espaços, tem apenas dígitos; busca esses dígitos contidos no CPF.
-  - **RG:** termo como digitado, contido no `rg`, sem diferenciar maiúscula de minúscula. **Limitação conhecida:** o RG não tem formato único (cada estado emite o seu), então a pontuação não é normalizada: buscar `00000074` não acha `MG-00.000.074`.
+  - **RG:** termo como digitado (em minúsculas no Java), contido em `LOWER(rg)`, sem diferenciar maiúscula de minúscula. **Limitação conhecida:** o RG não tem formato único (cada estado emite o seu), então a pontuação não é normalizada: buscar `00000074` não acha `MG-00.000.074`.
 - **Consulta:** `LEFT JOIN` do endereço só para obter `city`, com projeção direta no DTO (nenhuma entidade `Address` é carregada) e consulta de contagem separada. Uma página gera 2 consultas, qualquer que seja o `size`. Doador sem endereço aparece (armadilha #10).
 - **Paginação:** `page` começa em 0; `size` padrão 10, máximo 100 (acima disso é reduzido a 100). Ordenação padrão por `name` crescente; `sort` só aceita `name` e `createdAt`, `asc` ou `desc`; outro campo devolve 400 listando os aceitos. Lista vazia devolve 200 com `content` vazio.
 
@@ -245,7 +245,7 @@ Cada enum tem `id` (código curto) e `description` (rótulo em português), mais
 - Sem `columnDefinition` específico de banco nas entidades. Enums sem setters. Sem anotações de Jackson nas entidades: o JSON é assunto dos DTOs.
 - Injeção por construtor, sem `@Autowired` em atributo. Sem Lombok e sem MapStruct: construtores, getters e setters escritos à mão, e mapeamento DTO ↔ entidade manual.
 - Pacotes por camada; controllers se chamam `Resource`.
-- Busca sem acento com `TRANSLATE` completo, aplicado depois do `LOWER` e nos dois lados (coluna e termo), com a lista de caracteres definida uma única vez.
+- Busca sem acento com `TRANSLATE` completo (letras acentuadas em minúsculas e maiúsculas), aplicado **antes** do `LOWER` e nos dois lados (coluna e termo), com a lista de caracteres definida uma única vez. Assim o resultado não depende do locale do banco.
 
 ## 8. Segurança e privacidade: checklist
 
