@@ -1,7 +1,6 @@
 package com.santosediego.donorregistry.services;
 
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -58,7 +57,7 @@ public class DonorService {
 		String cpfDigits = term.replaceAll("[.\\-\\s]", "");
 		boolean cpfSearch = cpfDigits.matches("\\d+");
 		return repository.search(true, DonorSearchQueries.likePattern(term), cpfSearch, cpfSearch ? DonorSearchQueries.likePattern(cpfDigits) : "",
-				DonorSearchQueries.likePattern(term.toLowerCase(Locale.ROOT)), safe);
+				DonorSearchQueries.rgPattern(term), safe);
 	}
 
 	// Only whitelisted fields; id is added as tie-breaker so pages are stable
