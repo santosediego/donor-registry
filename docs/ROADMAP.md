@@ -16,10 +16,11 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
   - [x] **3.2** `Address` (1:1 opcional com `Donor`; `Address` é o lado dono, com `donor_id`) e changeSet `002`. Pronto quando: `./mvnw test` passa com o `ddl-auto=validate` contra as tabelas criadas pelo Liquibase; o `/h2-console` mostra `TB_ADDRESS` com `DONOR_ID` obrigatório e único e a chave estrangeira para `TB_DONOR` (`ON DELETE CASCADE`), `TB_DONOR` sem mudanças, e o `DATABASECHANGELOG` com 2 registros.
   - [x] **3.3** Dados de exemplo (changeSets `003-seed-donors` e `004-seed-addresses`, contexto `dev,test`, autor `santosediego`): 16 doadores fictícios (nomes de ficção científica, CPFs fictícios válidos, os 10 tipos sanguíneos, os 3 gêneros, campos opcionais nulos em alguns) e 10 endereços, deixando 6 doadores sem endereço. Sem `id` informado (o banco gera); o `donor_id` vem de subconsulta pelo CPF. `created_at` é `NOT NULL` e o Liquibase não passa pelo `@PrePersist`, então é informado com valor fixo em UTC; `updated_at` fica nulo. Pronto quando: `./mvnw test` passa com os dados carregados; `APP_PROFILE=test ./mvnw spring-boot:run` sobe e o `/h2-console` mostra `TB_DONOR` com 16 linhas, `TB_ADDRESS` com 10 e 6 doadores sem endereço; com `APP_PROFILE=test` e `SPRING_LIQUIBASE_CONTEXTS=prod` as duas tabelas ficam vazias e o `DATABASECHANGELOG` tem só os registros 001 e 002; o `dev` (PostgreSQL) sobe com os dados, verificado pelo Diego.
 - [ ] **4. CRUD de doador:**
-  - **4.1** Criar e buscar por id, com DTOs, validações e tratamento global de exceções (`StandardError`, `ResourceNotFoundException`, `ResourceExceptionHandler`). Conferir também o `createdAt` contra o relógio. Pronto quando: o POST cria, o GET por id devolve o doador e um id inexistente devolve 404 no formato padrão.
-  - **4.2** Listagem paginada com filtro por nome e CPF. Pronto quando: a busca pagina, ordena e filtra; a busca usa `LEFT JOIN FETCH`, então doador sem endereço aparece nos resultados, sem consultas em excesso (N+1).
+  - [x] **4.1** Criar e buscar por id, com DTOs, validações e tratamento global de exceções (`StandardError`, `ResourceNotFoundException`, `ResourceExceptionHandler`). Conferir também o `createdAt` contra o relógio. Pronto quando: o POST cria, o GET por id devolve o doador e um id inexistente devolve 404 no formato padrão.
+  - **4.2** Listagem paginada com busca por nome, CPF e RG (`GET /donors`). Pronto quando: a busca pagina, ordena e filtra; a busca usa `LEFT JOIN` com projeção direta no DTO (não `LEFT JOIN FETCH`), então doador sem endereço aparece nos resultados, sem consultas em excesso (N+1): uma página gera 2 consultas (dados e contagem).
   - **4.3** Atualizar e excluir. Pronto quando: o roteiro de Postman escrito pelo Diego passa de ponta a ponta.
 - [ ] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA.
+  - Candidatos a teste (achados durante as partes anteriores): `ACCENTED` e `PLAIN` (em `DonorSearchQueries`) têm o mesmo tamanho; senão o `TRANSLATE` remove caracteres sem avisar. Busca por RG ignora pontuação (`00000.199` acha `MG-00.000.199`; `.` não acha ninguém).
   - Pronto quando: cada cenário tem teste, e o Diego provou que cada teste falha quando o código é quebrado de propósito.
 - [ ] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
   - Pronto quando: um PR com teste quebrado fica bloqueado para merge.
@@ -28,6 +29,6 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
 
 ## Backlog (ordem a definir depois da Parte 5)
 
-Autenticação (decidir JWT ou sessão), configurações da entidade e logo, CSV, relatório, backup, 2FA opcional, front-end (`frontweb/`, protótipos em `docs/design/`), distribuição com Docker. Detalhes e armadilhas conhecidas estão em `docs/PLANO.md`.
+Autenticação (decidir JWT ou sessão), configurações da entidade e logo, CSV, relatório, backup, 2FA opcional, front-end (`frontweb/`, protótipos em `docs/design/`), distribuição com Docker. Endpoint de relatório com endereço completo e "selecionar todos os resultados da busca" (tela de seleção). Detalhes e armadilhas conhecidas estão em `docs/PLANO.md`.
 
 Extrair um repositório template (base Spring Boot) depois da Parte 7.

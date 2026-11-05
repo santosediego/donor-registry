@@ -2,6 +2,7 @@ package com.santosediego.donorregistry.resources.exceptions;
 
 import java.time.Instant;
 
+import org.apache.tomcat.util.http.InvalidParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.santosediego.donorregistry.services.exceptions.DuplicateCpfException;
 import com.santosediego.donorregistry.services.exceptions.InvalidEnumValueException;
+import com.santosediego.donorregistry.services.exceptions.InvalidSortException;
 import com.santosediego.donorregistry.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +38,11 @@ public class ResourceExceptionHandler {
 
 	@ExceptionHandler(InvalidEnumValueException.class)
 	public ResponseEntity<StandardError> invalidEnum(InvalidEnumValueException e, HttpServletRequest request) {
+		return build(HttpStatus.BAD_REQUEST, "Requisição inválida", e.getMessage(), request);
+	}
+
+	@ExceptionHandler(InvalidSortException.class)
+	public ResponseEntity<StandardError> invalidSort(InvalidSortException e, HttpServletRequest request) {
 		return build(HttpStatus.BAD_REQUEST, "Requisição inválida", e.getMessage(), request);
 	}
 
@@ -62,6 +69,15 @@ public class ResourceExceptionHandler {
 			HttpServletRequest request) {
 		return build(HttpStatus.BAD_REQUEST, "Requisição inválida", "Valor inválido para o parâmetro '"
 				+ e.getName() + "'.", request);
+	}
+
+	// Raised by Tomcat when it reads a malformed query parameter (e.g. "%zz" or a lone "%").
+	// Not echoed: the message would expose the raw value and internal details.
+	@ExceptionHandler(InvalidParameterException.class)
+	public ResponseEntity<StandardError> malformedParameter(InvalidParameterException e,
+			HttpServletRequest request) {
+		return build(HttpStatus.BAD_REQUEST, "Requisição inválida", "A URL contém um parâmetro mal codificado.",
+				request);
 	}
 
 	// Last resort: nothing internal (message, stack trace) goes in the response body

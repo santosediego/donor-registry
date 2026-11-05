@@ -1,19 +1,28 @@
 package com.santosediego.donorregistry.services;
 
+import java.util.List;
+
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.santosediego.donorregistry.dto.AddressInsertDTO;
 import com.santosediego.donorregistry.dto.DonorDTO;
 import com.santosediego.donorregistry.dto.DonorInsertDTO;
+import com.santosediego.donorregistry.dto.DonorSummaryDTO;
 import com.santosediego.donorregistry.entities.Address;
 import com.santosediego.donorregistry.entities.Donor;
 import com.santosediego.donorregistry.entities.enums.BloodType;
 import com.santosediego.donorregistry.entities.enums.Gender;
 import com.santosediego.donorregistry.entities.enums.MaritalStatus;
 import com.santosediego.donorregistry.repositories.DonorRepository;
+import com.santosediego.donorregistry.repositories.DonorSearchQueries;
 import com.santosediego.donorregistry.services.exceptions.DuplicateCpfException;
+import com.santosediego.donorregistry.services.exceptions.InvalidSortException;
 import com.santosediego.donorregistry.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -21,6 +30,9 @@ public class DonorService {
 
 	// Name of the unique constraint on tb_donor.cpf (see changeSet 001)
 	private static final String CPF_CONSTRAINT = "uk_tb_donor_cpf";
+
+	// Fields the list can be sorted by (property names of Donor)
+	private static final List<String> SORTABLE_FIELDS = List.of("name", "createdAt");
 
 	private final DonorRepository repository;
 
@@ -33,6 +45,30 @@ public class DonorService {
 		Donor entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Doador não encontrado."));
 		return new DonorDTO(entity);
+	}
+
+	@Transactional(readOnly = true)
+	public Page<DonorSummaryDTO> findAllPaged(String search, Pageable pageable) {
+		Pageable safe = withValidSort(pageable);
+		String term = search == null ? "" : search.trim();
+		if (term.isEmpty()) {
+			return repository.search(false, "", false, "", "", safe);
+		}
+		String cpfDigits = term.replaceAll("[.\\-\\s]", "");
+		boolean cpfSearch = cpfDigits.matches("\\d+");
+		return repository.search(true, DonorSearchQueries.likePattern(term), cpfSearch, cpfSearch ? DonorSearchQueries.likePattern(cpfDigits) : "",
+				DonorSearchQueries.rgPattern(term), safe);
+	}
+
+	// Only whitelisted fields; id is added as tie-breaker so pages are stable
+	private Pageable withValidSort(Pageable pageable) {
+		for (Sort.Order order : pageable.getSort()) {
+			if (!SORTABLE_FIELDS.contains(order.getProperty())) {
+				throw new InvalidSortException(SORTABLE_FIELDS);
+			}
+		}
+		Sort sort = pageable.getSort().isSorted() ? pageable.getSort() : Sort.by("name");
+		return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort.and(Sort.by("id")));
 	}
 
 	@Transactional
