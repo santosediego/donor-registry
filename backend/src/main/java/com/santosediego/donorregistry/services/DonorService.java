@@ -115,6 +115,14 @@ public class DonorService {
 		return new DonorDTO(entity);
 	}
 
+	@Transactional
+	public void delete(Long id) {
+		// deleteById does not fail for a missing id, so look it up first (404)
+		Donor entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Doador não encontrado."));
+		repository.delete(entity);
+	}
+
 	private void copyDtoToEntity(DonorRequestDTO dto, Donor entity) {
 		entity.setName(dto.name());
 		entity.setCpf(dto.cpf());

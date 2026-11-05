@@ -8,6 +8,7 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,5 +60,11 @@ public class DonorResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<DonorDTO> update(@PathVariable Long id, @Valid @RequestBody DonorRequestDTO dto) {
 		return ResponseEntity.ok().body(service.update(id, dto));
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
