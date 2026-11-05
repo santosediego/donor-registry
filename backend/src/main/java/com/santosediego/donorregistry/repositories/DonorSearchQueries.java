@@ -33,4 +33,11 @@ public final class DonorSearchQueries {
 
 	private DonorSearchQueries() {
 	}
+
+	/** Turns a typed term into a LIKE pattern "%term%", with %, _ and the escape character taken literally. */
+	public static String likePattern(String term) {
+		String escape = String.valueOf(LIKE_ESCAPE);
+		String escaped = term.replace(escape, escape + escape).replace("%", escape + "%").replace("_", escape + "_");
+		return "%" + escaped + "%";
+	}
 }

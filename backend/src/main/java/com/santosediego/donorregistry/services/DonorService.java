@@ -57,8 +57,8 @@ public class DonorService {
 		}
 		String cpfDigits = term.replaceAll("[.\\-\\s]", "");
 		boolean cpfSearch = cpfDigits.matches("\\d+");
-		return repository.search(true, likePattern(term), cpfSearch, cpfSearch ? likePattern(cpfDigits) : "",
-				likePattern(term.toLowerCase(Locale.ROOT)), safe);
+		return repository.search(true, DonorSearchQueries.likePattern(term), cpfSearch, cpfSearch ? DonorSearchQueries.likePattern(cpfDigits) : "",
+				DonorSearchQueries.likePattern(term.toLowerCase(Locale.ROOT)), safe);
 	}
 
 	// Only whitelisted fields; id is added as tie-breaker so pages are stable
@@ -70,13 +70,6 @@ public class DonorService {
 		}
 		Sort sort = pageable.getSort().isSorted() ? pageable.getSort() : Sort.by("name");
 		return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort.and(Sort.by("id")));
-	}
-
-	// "%term%" with %, _ and the escape character taken literally
-	private String likePattern(String term) {
-		String escaped = term.replace(String.valueOf(DonorSearchQueries.LIKE_ESCAPE), "" + DonorSearchQueries.LIKE_ESCAPE + DonorSearchQueries.LIKE_ESCAPE)
-				.replace("%", DonorSearchQueries.LIKE_ESCAPE + "%").replace("_", DonorSearchQueries.LIKE_ESCAPE + "_");
-		return "%" + escaped + "%";
 	}
 
 	@Transactional
