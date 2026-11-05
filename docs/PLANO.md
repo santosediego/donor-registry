@@ -20,6 +20,7 @@ Documento de trabalho para o desenvolvimento do projeto, pensado para ser usado 
 | Contato, nome da entidade e logo | Viram **configuração** (tabela e tela), saem do código |
 | Esquema do banco | **Liquibase** (YAML), no lugar do `create.sql` gerado à mão. Antes da primeira release os changeSets já aplicados podem ser editados e o banco de dev recriado; depois da primeira release, nunca se edita, cria-se um novo |
 | Exportação | **CSV e backup**, com papéis diferentes (ver seção 6) |
+| Primeiro uso | Protegido por um **código de configuração** gerado pelo back na primeira inicialização; sem ele não se cria o administrador nem se restaura backup (ver seção 4, Autenticação) |
 | Distribuição | **Docker** (`compose` com banco, back e front) e um README de "como rodar" são o essencial. O **script de instalação** é opcional, fica para o fim |
 | Layout | Protótipos novos em `docs/design/` (lista, cadastro, seleção, relatório, login, primeiro uso, recuperação e configurações) |
 | Banco | **PostgreSQL** para uso real (local ou hospedado). **H2 em memória** só nos testes automatizados e na demonstração (os dados não persistem) |
@@ -79,7 +80,24 @@ A ordem do backlog é definida depois da Parte 5. Cada tema abaixo vira uma ou m
   2. Esqueceu a senha, tem o código: tela "Recuperar senha". Se o 2FA estiver ligado, o código também o desliga (é a recuperação do 2FA, não há segundo mecanismo). Depois de usado, o código é substituído por um novo, mostrado uma vez.
   3. Perdeu a senha **e** o código: comando de **redefinição do administrador**, rodado no terminal por quem administra o servidor (`redefinir-admin`, ou `docker exec ...` no Docker). Define nova senha (pedida no prompt, **nunca como argumento** do comando), desliga o 2FA e gera novo código; **os doadores e as configurações não são apagados**. Regras: **nunca** existe como endpoint HTTP nem como botão no sistema; registra o evento no log; tem teste automatizado (senha trocada, 2FA desligado, dados intactos). Não enfraquece a segurança: quem tem acesso ao servidor já tem acesso ao banco e aos segredos.
   - Restaurar um backup não troca a senha: o backup restaura o que estava lá, e a redefinição acima cobre o caso de senha perdida.
-- **Primeiro uso protegido:** a tela de criar administrador fica aberta a quem chegar primeiro. Em instalação local o risco é baixo; **hospedado, não**. A inicialização gera um **token de configuração** de uso único, mostrado no console/log (ou passado por variável de ambiente) e exigido nessa tela. Depois que o administrador existe, as rotas de configuração inicial deixam de responder.
+- **Primeiro uso protegido: código de configuração.**
+  - **Problema:** numa instalação recém-subida e exposta na rede, a tela de primeiro uso (criar o administrador ou restaurar um backup) ficaria aberta a quem chegasse primeiro.
+  - **Solução:** na primeira inicialização, sem nenhum administrador no banco, o back gera um **código de configuração** de 8 caracteres no formato `XXXX-XXXX`: letras e números sem caracteres ambíguos (sem 0/O, 1/I/L), sorteado com `SecureRandom` (cerca de 40 bits). A comparação ignora maiúsculas, minúsculas, hífen e espaço, e é feita em tempo constante. Quem consegue ler o log ou a pasta de dados está de fato na instalação.
+  - **Onde aparece:** em um quadro no log de inicialização (`docker compose logs` no Docker; a saída do programa quando roda sem Docker) e gravado em `setup-code.txt`, na pasta de dados (legível só pelo dono). O arquivo é apagado quando o administrador é criado. O caminho da pasta de dados será uma propriedade configurável, definida na etapa de Docker.
+  - **Escolher o código:** variável `SETUP_CODE` no `.env`, com o mesmo formato e tamanho (8 caracteres); se for inválida, a aplicação não sobe. O quadro do log avisa que está usando o código definido e não o mostra. Esse código **não muda** no reinício.
+  - **Validade:** sem prazo. O código gerado só é invalidado por reinício (nasce outro).
+  - **Regras de segurança (cada uma vira teste):**
+    1. Vale para os dois caminhos do primeiro uso: criar o administrador **e** restaurar backup. É exigido **na API**, não só na tela: o front guarda o código apenas na memória e o reenvia, e o servidor o confere em cada requisição.
+    2. Limite de tentativas com **um contador único**, compartilhado por todos os endpoints do primeiro uso e **global** (não por IP: atrás de proxy o IP é o do proxy). 5 tentativas; depois, bloqueio de 5 minutos, que dobra a cada novo bloqueio até 1 hora. O contador fica em memória: reiniciar o sistema o zera.
+    3. Reiniciar antes de concluir: o código gerado é substituído (o anterior deixa de valer); o definido em `SETUP_CODE` permanece, e o reinício só zera o contador.
+    4. Só pode existir um administrador, mesmo com requisições simultâneas (restrição no banco).
+    5. Depois que o administrador existe, os endpoints de primeiro uso respondem 404 para sempre, o arquivo é apagado e o código nunca mais aparece em log.
+    6. O código não é registrado em log depois de usado, nem o digitado errado.
+    7. Testes obrigatórios: sem código não cria administrador; código errado não cria; bloqueio após as tentativas (e contador único entre os endpoints); endpoint fechado depois do primeiro administrador; restaurar backup também exige o código; dois "criar administrador" simultâneos geram um só; `SETUP_CODE` inválido impede a aplicação de subir.
+  - **Resposta da API (proposta, a confirmar na etapa de autenticação):** código incorreto devolve 403 com as tentativas restantes; bloqueio devolve 429 com `Retry-After`, e a tela mostra "tente de novo em N minutos".
+  - **Não confundir três coisas:** o **código de configuração** (do servidor, uso único na instalação), o **código de recuperação** (do usuário, mostrado uma vez ao criar o administrador) e o **comando de redefinição do administrador** (terminal do servidor). Restaurar backup pelo primeiro uso exige o código de configuração; restaurar logado, em Configurações, é outro endpoint, autenticado.
+  - **Fluxo:** sistema sem administrador abre na tela 1; código correto leva à tela 2 (selo "Código de configuração confirmado"); criar o administrador leva à tela 3; depois, a lista. Com administrador já existente o sistema abre no Login, e a tela 1 deixa de existir.
+  - **Alternativa registrada, não adotada agora:** criar o administrador por variáveis de ambiente, pulando a tela de primeiro uso, como fazem alguns serviços hospedados por conta própria.
 - **Limite de tentativas** no login e no código de recuperação (atraso progressivo ou bloqueio temporário). **HTTPS** obrigatório quando hospedado (proxy reverso).
 - Sem valor padrão para segredo em nenhum perfil: se faltar, a aplicação falha ao subir.
 
@@ -254,7 +272,7 @@ Cada enum tem `id` (código curto) e `description` (rótulo em português), mais
 - [ ] Sem senha padrão do administrador.
 - [ ] CORS restrito à origem do front.
 - [ ] Backup criptografado; CSV com aviso de dados pessoais.
-- [ ] Token de configuração no primeiro uso, limite de tentativas e HTTPS quando hospedado.
+- [ ] Código de configuração no primeiro uso (exigido na API, contador único de tentativas) e HTTPS quando hospedado.
 - [ ] Logo e contato fora do código; dados de exemplo todos fictícios.
 - [ ] Nada com dados pessoais gravado em disco sem necessidade (sem `export/` e `import/`).
 - [ ] Dados pessoais e de saúde (tipo sanguíneo): tratar como sensíveis também na documentação.
@@ -262,19 +280,23 @@ Cada enum tem `id` (código curto) e `description` (rótulo em português), mais
 ## 9. Telas (protótipos)
 
 Canvas "Registro de Doadores":
-1. Lista de doadores (busca, paginação, menu Arquivos)
-2. Cadastro, visualização e edição (um único componente)
-3. Escolher doadores para o relatório ("Selecionar todos" = todos os resultados da busca)
-4. Relatório A4 em HTML
-5. Login
-6. Primeiro uso (criar administrador ou restaurar backup)
-7. Código de recuperação
-8. Recuperar senha
-9. Configurações e backup
+1. Primeiro acesso (código de configuração)
+   - 1a. Código incorreto
+   - 1b. Bloqueio por tentativas
+2. Primeiro uso (começar do zero ou restaurar backup)
+3. Código de recuperação
+4. Login
+5. Recuperar senha
+6. Lista de doadores (busca, paginação, menu Arquivos)
+7. Cadastro, visualização e edição (um único componente)
+8. Escolher doadores para o relatório ("Selecionar todos" = todos os resultados da busca)
+9. Relatório A4 em HTML
+10. Configurações e backup
 
 ### Decisões de texto e interface
 
 - **Nada preso a um computador.** O sistema roda local ou hospedado, então nenhum texto diz "este computador" ou "esta máquina". Usar "sistema" e "instalação".
+- **Dois códigos com nomes distintos:** "código de configuração" (do servidor, uso único na instalação) e "código de recuperação" (do usuário). Nunca usar um nome pelo outro.
 - **Backup:** a orientação é só "Guarde em local seguro". Sem sugerir pendrive (corrompe com o tempo) e sem explicar demais. O aviso de que **a senha do backup não é recuperável** fica nas Configurações, antes de criar o backup, que é quando serve.
 - **Sem mensagens que soem como bronca.** Na restauração, senha vazia ou errada é tratada pela validação do próprio sistema, sem texto do tipo "se perdeu, comece do zero".
 - **Restaurar backup não troca a senha.** O checkbox "definir nova senha ao restaurar" foi descartado: duplicava o que o código de recuperação e o comando de redefinição do administrador já resolvem.
@@ -295,7 +317,7 @@ Será decidida lá na frente, na etapa de autenticação. Critérios combinados:
 
 Notas:
 - A segurança é parecida nas duas primeiras (7 palavras ou 20 caracteres sobem para 90 a 100 bits). A escolha é de usabilidade e de dependências, não de segurança.
-- As telas 7 e 8 do protótipo mostram o formato de 6 palavras **só como exemplo**; o formato final vem desta decisão.
+- As telas 3 e 5 do protótipo mostram o formato de 6 palavras **só como exemplo**; o formato final vem desta decisão.
 - Princípio para o repositório: não embutir lista, dicionário ou arquivo de terceiros cuja licença restrinja uso comercial ou redistribuição.
 
 

@@ -29,6 +29,6 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
 
 ## Backlog (ordem a definir depois da Parte 5)
 
-Autenticação (decidir JWT ou sessão), configurações da entidade e logo, CSV, relatório, backup, 2FA opcional, front-end (`frontweb/`, protótipos em `docs/design/`), distribuição com Docker. Endpoint de relatório com endereço completo e "selecionar todos os resultados da busca" (tela de seleção). Detalhes e armadilhas conhecidas estão em `docs/PLANO.md`.
+Autenticação (decidir JWT ou sessão), configurações da entidade e logo, CSV, relatório, backup, 2FA opcional, front-end (`frontweb/`, protótipos em `docs/design/`), distribuição com Docker. Endpoint de relatório com endereço completo e "selecionar todos os resultados da busca" (tela de seleção). Detalhes e armadilhas conhecidas estão em `docs/PLANO.md`. Primeiro uso protegido por código de configuração (regras e testes em docs/PLANO.md).
 
 Extrair um repositório template (base Spring Boot) depois da Parte 7.
