@@ -23,9 +23,10 @@ public interface DonorRepository extends JpaRepository<Donor, Long> {
 	 * All patterns are already in LIKE format (with % and the escape character).
 	 */
 	String WHERE = " WHERE (:filtered = false"
-			+ " OR " + DonorSearchQueries.NORMALIZED_NAME + " LIKE " + DonorSearchQueries.NORMALIZED_TERM + " ESCAPE '!'"
-			+ " OR (:cpfSearch = true AND d.cpf LIKE :cpf ESCAPE '!')"
-			+ " OR LOWER(d.rg) LIKE :rg ESCAPE '!')";
+			+ " OR " + DonorSearchQueries.NORMALIZED_NAME + " LIKE " + DonorSearchQueries.NORMALIZED_TERM
+			+ DonorSearchQueries.ESCAPE_CLAUSE
+			+ " OR (:cpfSearch = true AND d.cpf LIKE :cpf" + DonorSearchQueries.ESCAPE_CLAUSE + ")"
+			+ " OR LOWER(d.rg) LIKE :rg" + DonorSearchQueries.ESCAPE_CLAUSE + ")";
 
 	@Query(value = "SELECT new com.santosediego.donorregistry.dto.DonorSummaryDTO("
 			+ "d.id, d.name, d.phone, d.cpf, d.rg, d.bloodType, a.city) "

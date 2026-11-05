@@ -21,6 +21,7 @@ import com.santosediego.donorregistry.entities.enums.BloodType;
 import com.santosediego.donorregistry.entities.enums.Gender;
 import com.santosediego.donorregistry.entities.enums.MaritalStatus;
 import com.santosediego.donorregistry.repositories.DonorRepository;
+import com.santosediego.donorregistry.repositories.DonorSearchQueries;
 import com.santosediego.donorregistry.services.exceptions.DuplicateCpfException;
 import com.santosediego.donorregistry.services.exceptions.InvalidSortException;
 import com.santosediego.donorregistry.services.exceptions.ResourceNotFoundException;
@@ -33,9 +34,6 @@ public class DonorService {
 
 	// Fields the list can be sorted by (property names of Donor)
 	private static final List<String> SORTABLE_FIELDS = List.of("name", "createdAt");
-
-	// Must match the ESCAPE character used in DonorRepository
-	private static final char LIKE_ESCAPE = '!';
 
 	private final DonorRepository repository;
 
@@ -76,8 +74,8 @@ public class DonorService {
 
 	// "%term%" with %, _ and the escape character taken literally
 	private String likePattern(String term) {
-		String escaped = term.replace(String.valueOf(LIKE_ESCAPE), "" + LIKE_ESCAPE + LIKE_ESCAPE)
-				.replace("%", LIKE_ESCAPE + "%").replace("_", LIKE_ESCAPE + "_");
+		String escaped = term.replace(String.valueOf(DonorSearchQueries.LIKE_ESCAPE), "" + DonorSearchQueries.LIKE_ESCAPE + DonorSearchQueries.LIKE_ESCAPE)
+				.replace("%", DonorSearchQueries.LIKE_ESCAPE + "%").replace("_", DonorSearchQueries.LIKE_ESCAPE + "_");
 		return "%" + escaped + "%";
 	}
 

@@ -19,6 +19,7 @@ public final class DonorSearchQueries {
 
 	// Escape character for LIKE, so a typed % or _ is a literal, not a wildcard
 	public static final char LIKE_ESCAPE = '!';
+	public static final String ESCAPE_CLAUSE = " ESCAPE '" + LIKE_ESCAPE + "'";
 
 	private DonorSearchQueries() {
 	}
