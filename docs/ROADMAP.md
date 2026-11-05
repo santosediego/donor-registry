@@ -20,6 +20,7 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
   - **4.2** Listagem paginada com busca por nome, CPF e RG (`GET /donors`). Pronto quando: a busca pagina, ordena e filtra; a busca usa `LEFT JOIN` com projeção direta no DTO (não `LEFT JOIN FETCH`), então doador sem endereço aparece nos resultados, sem consultas em excesso (N+1): uma página gera 2 consultas (dados e contagem).
   - **4.3** Atualizar e excluir. Pronto quando: o roteiro de Postman escrito pelo Diego passa de ponta a ponta.
 - [ ] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA.
+  - Candidatos a teste (achados durante as partes anteriores): `ACCENTED` e `PLAIN` (em `DonorSearchQueries`) têm o mesmo tamanho; senão o `TRANSLATE` remove caracteres sem avisar.
   - Pronto quando: cada cenário tem teste, e o Diego provou que cada teste falha quando o código é quebrado de propósito.
 - [ ] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
   - Pronto quando: um PR com teste quebrado fica bloqueado para merge.
