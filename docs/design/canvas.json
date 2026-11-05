@@ -1,23 +1,146 @@
 {
   "v": 3,
-  "createdOnFiles": { "v": 1, "at": "2026-10-30T20:05:00Z" },
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-30T20:05:00Z"
+  },
   "title": "Registro de Doadores",
-  "launch": { "view": "canvas" },
+  "launch": {
+    "view": "canvas"
+  },
   "pages": [],
   "boards": {
-    "Main.dc.html": { "x": 0, "y": 0, "w": 1280, "h": 1140, "title": "1 · Lista de doadores", "expand": "fill", "is_interactive": true },
-    "Cadastro.dc.html": { "x": 1360, "y": 0, "w": 1280, "h": 1100, "title": "2 · Cadastro / visualização / edição", "expand": "fill", "is_interactive": true },
-    "Selecao.dc.html": { "x": 0, "y": 1260, "w": 1280, "h": 1020, "title": "3 · Escolher doadores para o relatório", "expand": "fill", "is_interactive": true },
-    "Relatorio.dc.html": { "x": 1360, "y": 1260, "w": 794, "h": 1060, "title": "4 · Relatório (A4, HTML para imprimir)", "print": "flow", "paper": "a4" },
-    "Login.dc.html": { "x": 0, "y": 2440, "w": 1280, "h": 760, "title": "5 · Login", "expand": "fill", "is_interactive": true },
-    "PrimeiroUso.dc.html": { "x": 1360, "y": 2440, "w": 1280, "h": 900, "title": "6 · Primeiro uso", "expand": "fill", "is_interactive": true },
-    "CodigoRecuperacao.dc.html": { "x": 0, "y": 3460, "w": 1280, "h": 760, "title": "7 · Código de recuperação", "expand": "fill", "is_interactive": true },
-    "RecuperarSenha.dc.html": { "x": 1360, "y": 3460, "w": 1280, "h": 760, "title": "8 · Recuperar senha", "expand": "fill", "is_interactive": true },
-    "Configuracoes.dc.html": { "x": 0, "y": 4340, "w": 1280, "h": 1500, "title": "9 · Configurações e backup", "expand": "fill", "is_interactive": true }
+    "PrimeiroAcesso.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 1000,
+      "title": "1 · Primeiro acesso: código de configuração",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "PrimeiroAcessoErro.dc.html": {
+      "w": 1280,
+      "h": 1000,
+      "title": "1a · Código incorreto",
+      "expand": "fill",
+      "is_interactive": true,
+      "x": 1360,
+      "y": 0
+    },
+    "PrimeiroAcessoBloqueio.dc.html": {
+      "w": 1280,
+      "h": 1120,
+      "title": "1b · Bloqueio por tentativas",
+      "expand": "fill",
+      "is_interactive": true,
+      "x": 0,
+      "y": 1120
+    },
+    "PrimeiroUso.dc.html": {
+      "x": 1360,
+      "y": 1120,
+      "w": 1280,
+      "h": 900,
+      "title": "2 · Primeiro uso: começar ou restaurar",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "CodigoRecuperacao.dc.html": {
+      "x": 0,
+      "y": 2360,
+      "w": 1280,
+      "h": 760,
+      "title": "3 · Código de recuperação",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Login.dc.html": {
+      "x": 1360,
+      "y": 2360,
+      "w": 1280,
+      "h": 760,
+      "title": "4 · Login",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "RecuperarSenha.dc.html": {
+      "x": 0,
+      "y": 3240,
+      "w": 1280,
+      "h": 760,
+      "title": "5 · Recuperar senha",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Main.dc.html": {
+      "x": 1360,
+      "y": 3240,
+      "w": 1280,
+      "h": 1140,
+      "title": "6 · Lista de doadores",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Cadastro.dc.html": {
+      "x": 0,
+      "y": 4500,
+      "w": 1280,
+      "h": 1100,
+      "title": "7 · Cadastro / visualização / edição",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Selecao.dc.html": {
+      "x": 1360,
+      "y": 4500,
+      "w": 1280,
+      "h": 1020,
+      "title": "8 · Escolher doadores para o relatório",
+      "expand": "fill",
+      "is_interactive": true
+    },
+    "Relatorio.dc.html": {
+      "x": 0,
+      "y": 5720,
+      "w": 794,
+      "h": 1060,
+      "title": "9 · Relatório (A4, HTML para imprimir)",
+      "print": "flow",
+      "paper": "a4"
+    },
+    "Configuracoes.dc.html": {
+      "x": 1360,
+      "y": 5720,
+      "w": 1280,
+      "h": 1500,
+      "title": "10 · Configurações e backup",
+      "expand": "fill",
+      "is_interactive": true
+    }
   },
-  "order": ["Main.dc.html", "Cadastro.dc.html", "Selecao.dc.html", "Relatorio.dc.html", "Login.dc.html", "PrimeiroUso.dc.html", "CodigoRecuperacao.dc.html", "RecuperarSenha.dc.html", "Configuracoes.dc.html"],
+  "order": [
+    "PrimeiroAcesso.dc.html",
+    "PrimeiroAcessoErro.dc.html",
+    "PrimeiroAcessoBloqueio.dc.html",
+    "PrimeiroUso.dc.html",
+    "CodigoRecuperacao.dc.html",
+    "Login.dc.html",
+    "RecuperarSenha.dc.html",
+    "Main.dc.html",
+    "Cadastro.dc.html",
+    "Selecao.dc.html",
+    "Relatorio.dc.html",
+    "Configuracoes.dc.html"
+  ],
   "notes": {
-    "titulo": { "x": 0, "y": -300, "text": "Registro de Doadores: redesenho das telas", "kind": "title1", "maxW": 2640 }
+    "titulo": {
+      "x": 0,
+      "y": -300,
+      "text": "Registro de Doadores: redesenho das telas",
+      "kind": "title1",
+      "maxW": 2640
+    }
   },
   "designSystems": []
 }
