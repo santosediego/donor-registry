@@ -15,6 +15,8 @@ public interface DonorRepository extends JpaRepository<Donor, Long> {
 
 	boolean existsByCpf(String cpf);
 
+	boolean existsByCpfAndIdNot(String cpf, Long id);
+
 	/*
 	 * LEFT JOIN (not INNER) so a donor without address still shows up, and a direct
 	 * projection so no Address entity is loaded (no N+1). The filter and its

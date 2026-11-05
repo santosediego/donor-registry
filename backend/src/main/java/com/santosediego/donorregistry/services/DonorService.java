@@ -1,5 +1,6 @@
 package com.santosediego.donorregistry.services;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -90,6 +91,30 @@ public class DonorService {
 		return new DonorDTO(entity);
 	}
 
+	@Transactional
+	public DonorDTO update(Long id, DonorRequestDTO dto) {
+		Donor entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Doador não encontrado."));
+		if (repository.existsByCpfAndIdNot(dto.cpf(), id)) {
+			throw new DuplicateCpfException();
+		}
+		DonorDTO before = new DonorDTO(entity);
+		copyDtoToEntity(dto, entity);
+		// @PreUpdate only fires when the donor row changes; an address-only change would be missed
+		if (!before.equals(new DonorDTO(entity))) {
+			entity.setUpdatedAt(Instant.now());
+		}
+		try {
+			entity = repository.saveAndFlush(entity);
+		} catch (DataIntegrityViolationException e) {
+			if (isCpfConstraintViolation(e)) {
+				throw new DuplicateCpfException();
+			}
+			throw e;
+		}
+		return new DonorDTO(entity);
+	}
+
 	private void copyDtoToEntity(DonorRequestDTO dto, Donor entity) {
 		entity.setName(dto.name());
 		entity.setCpf(dto.cpf());
@@ -101,12 +126,27 @@ public class DonorService {
 		BloodType bloodType = BloodType.fromId(dto.bloodType());
 		entity.setBloodType(bloodType == null ? null : bloodType.getId());
 		entity.setPhone(dto.phone());
-		entity.setWeight(dto.weight());
-		entity.setAddress(dto.address() == null ? null : toAddress(dto.address()));
+		// Same scale as the NUMERIC(4,1) column, so 70 and 70.0 are the same value (@Digits allows 1 decimal)
+		entity.setWeight(dto.weight() == null ? null : dto.weight().setScale(1));
+		copyAddress(dto.address(), entity);
 	}
 
-	private Address toAddress(AddressRequestDTO dto) {
-		Address address = new Address();
+	// Three cases: create, update the existing one in place, or remove (orphanRemoval).
+	// Never replace an existing Address by a new object: Hibernate would INSERT the new row
+	// before DELETE of the old one and break the unique donor_id.
+	private void copyAddress(AddressRequestDTO dto, Donor entity) {
+		if (dto == null) {
+			entity.setAddress(null);
+		} else if (entity.getAddress() == null) {
+			Address address = new Address();
+			copyAddressFields(dto, address);
+			entity.setAddress(address);
+		} else {
+			copyAddressFields(dto, entity.getAddress());
+		}
+	}
+
+	private void copyAddressFields(AddressRequestDTO dto, Address address) {
 		address.setStreet(dto.street());
 		address.setNumber(dto.number());
 		address.setComplement(blankToNull(dto.complement()));
@@ -114,7 +154,6 @@ public class DonorService {
 		address.setZipCode(dto.zipCode());
 		address.setCity(dto.city());
 		address.setState(dto.state());
-		return address;
 	}
 
 	private String blankToNull(String value) {
