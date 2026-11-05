@@ -21,6 +21,16 @@ public final class DonorSearchQueries {
 	public static final char LIKE_ESCAPE = '!';
 	public static final String ESCAPE_CLAUSE = " ESCAPE '" + LIKE_ESCAPE + "'";
 
+	/*
+	 * Filter of the donor list. No parameter is ever null: PostgreSQL cannot infer
+	 * the type of a null parameter. The service sends "filtered = false" (and empty
+	 * patterns) when there is no search term. The patterns come from likePattern.
+	 */
+	public static final String WHERE = " WHERE (:filtered = false"
+			+ " OR " + NORMALIZED_NAME + " LIKE " + NORMALIZED_TERM + ESCAPE_CLAUSE
+			+ " OR (:cpfSearch = true AND d.cpf LIKE :cpf" + ESCAPE_CLAUSE + ")"
+			+ " OR LOWER(d.rg) LIKE :rg" + ESCAPE_CLAUSE + ")";
+
 	private DonorSearchQueries() {
 	}
 }

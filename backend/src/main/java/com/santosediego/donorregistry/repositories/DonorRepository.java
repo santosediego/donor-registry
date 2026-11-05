@@ -17,21 +17,13 @@ public interface DonorRepository extends JpaRepository<Donor, Long> {
 
 	/*
 	 * LEFT JOIN (not INNER) so a donor without address still shows up, and a direct
-	 * projection so no Address entity is loaded (no N+1). No parameter is ever null:
-	 * PostgreSQL cannot infer the type of a null parameter. The service sends
-	 * "filtered = false" (and empty patterns) when there is no search term.
-	 * All patterns are already in LIKE format (with % and the escape character).
+	 * projection so no Address entity is loaded (no N+1). The filter and its
+	 * parameters are in DonorSearchQueries.
 	 */
-	String WHERE = " WHERE (:filtered = false"
-			+ " OR " + DonorSearchQueries.NORMALIZED_NAME + " LIKE " + DonorSearchQueries.NORMALIZED_TERM
-			+ DonorSearchQueries.ESCAPE_CLAUSE
-			+ " OR (:cpfSearch = true AND d.cpf LIKE :cpf" + DonorSearchQueries.ESCAPE_CLAUSE + ")"
-			+ " OR LOWER(d.rg) LIKE :rg" + DonorSearchQueries.ESCAPE_CLAUSE + ")";
-
 	@Query(value = "SELECT new com.santosediego.donorregistry.dto.DonorSummaryDTO("
 			+ "d.id, d.name, d.phone, d.cpf, d.rg, d.bloodType, a.city) "
-			+ "FROM Donor d LEFT JOIN d.address a" + WHERE,
-			countQuery = "SELECT COUNT(d) FROM Donor d" + WHERE)
+			+ "FROM Donor d LEFT JOIN d.address a" + DonorSearchQueries.WHERE,
+			countQuery = "SELECT COUNT(d) FROM Donor d" + DonorSearchQueries.WHERE)
 	Page<DonorSummaryDTO> search(@Param("filtered") boolean filtered, @Param("name") String name,
 			@Param("cpfSearch") boolean cpfSearch, @Param("cpf") String cpf, @Param("rg") String rg,
 			Pageable pageable);
