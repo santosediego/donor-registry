@@ -10,9 +10,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.santosediego.donorregistry.dto.AddressInsertDTO;
+import com.santosediego.donorregistry.dto.AddressRequestDTO;
 import com.santosediego.donorregistry.dto.DonorDTO;
-import com.santosediego.donorregistry.dto.DonorInsertDTO;
+import com.santosediego.donorregistry.dto.DonorRequestDTO;
 import com.santosediego.donorregistry.dto.DonorSummaryDTO;
 import com.santosediego.donorregistry.entities.Address;
 import com.santosediego.donorregistry.entities.Donor;
@@ -72,7 +72,7 @@ public class DonorService {
 	}
 
 	@Transactional
-	public DonorDTO insert(DonorInsertDTO dto) {
+	public DonorDTO insert(DonorRequestDTO dto) {
 		if (repository.existsByCpf(dto.cpf())) {
 			throw new DuplicateCpfException();
 		}
@@ -90,7 +90,7 @@ public class DonorService {
 		return new DonorDTO(entity);
 	}
 
-	private void copyDtoToEntity(DonorInsertDTO dto, Donor entity) {
+	private void copyDtoToEntity(DonorRequestDTO dto, Donor entity) {
 		entity.setName(dto.name());
 		entity.setCpf(dto.cpf());
 		entity.setRg(blankToNull(dto.rg()));
@@ -105,7 +105,7 @@ public class DonorService {
 		entity.setAddress(dto.address() == null ? null : toAddress(dto.address()));
 	}
 
-	private Address toAddress(AddressInsertDTO dto) {
+	private Address toAddress(AddressRequestDTO dto) {
 		Address address = new Address();
 		address.setStreet(dto.street());
 		address.setNumber(dto.number());

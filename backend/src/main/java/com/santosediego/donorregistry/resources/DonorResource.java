@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.santosediego.donorregistry.dto.DonorDTO;
-import com.santosediego.donorregistry.dto.DonorInsertDTO;
+import com.santosediego.donorregistry.dto.DonorRequestDTO;
 import com.santosediego.donorregistry.dto.DonorSummaryDTO;
 import com.santosediego.donorregistry.services.DonorService;
 
@@ -48,7 +48,7 @@ public class DonorResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<DonorDTO> insert(@Valid @RequestBody DonorInsertDTO dto) {
+	public ResponseEntity<DonorDTO> insert(@Valid @RequestBody DonorRequestDTO dto) {
 		DonorDTO created = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.id())
 				.toUri();

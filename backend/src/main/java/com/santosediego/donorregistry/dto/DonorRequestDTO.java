@@ -17,7 +17,7 @@ import jakarta.validation.constraints.Size;
 
 // gender, maritalStatus and bloodType arrive as the short code ("M", "SOL", "A+")
 // and are converted in the service, so the enums need no Jackson annotations.
-public record DonorInsertDTO(
+public record DonorRequestDTO(
 
 		@NotNull(message = "O nome é obrigatório.")
 		@Size(min = 2, max = 120, message = "O nome deve ter entre {min} e {max} caracteres.")
@@ -53,5 +53,5 @@ public record DonorInsertDTO(
 		BigDecimal weight,
 
 		@Valid
-		AddressInsertDTO address) {
+		AddressRequestDTO address) {
 }

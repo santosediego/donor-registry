@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record AddressInsertDTO(
+public record AddressRequestDTO(
 
 		@NotBlank(message = "A rua é obrigatória.")
 		@Size(max = 150, message = "A rua deve ter no máximo {max} caracteres.")
