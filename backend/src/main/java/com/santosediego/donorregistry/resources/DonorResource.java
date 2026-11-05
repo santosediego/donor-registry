@@ -4,7 +4,6 @@ import java.net.URI;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +32,12 @@ public class DonorResource {
 		this.service = service;
 	}
 
-	// page (from 0), size (default 10, max 100) and sort (name or createdAt) come from Pageable
+	// page (from 0), size and sort come from Pageable; limits are in application.properties,
+	// the default sort (name) is applied by the service
 	@GetMapping
 	public ResponseEntity<PagedModel<DonorSummaryDTO>> findAllPaged(
 			@RequestParam(value = "search", required = false) String search,
-			@PageableDefault(sort = "name") Pageable pageable) {
+			Pageable pageable) {
 		Page<DonorSummaryDTO> page = service.findAllPaged(search, pageable);
 		return ResponseEntity.ok().body(new PagedModel<>(page));
 	}
