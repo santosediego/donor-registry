@@ -252,6 +252,14 @@ Cada enum tem `id` (código curto) e `description` (rótulo em português), mais
 - **Consulta:** `LEFT JOIN` do endereço só para obter `city`, com projeção direta no DTO (nenhuma entidade `Address` é carregada) e consulta de contagem separada. Uma página gera 2 consultas, qualquer que seja o `size`. Doador sem endereço aparece (armadilha #10).
 - **Paginação:** `page` começa em 0; `size` padrão 10, máximo 100 (acima disso é reduzido a 100). Ordenação padrão por `name` crescente; `sort` só aceita `name` e `createdAt`, `asc` ou `desc`; outro campo devolve 400 listando os aceitos. Lista vazia devolve 200 com `content` vazio.
 
+### Atualização e exclusão (Parte 4.3)
+- **`PUT /donors/{id}` substitui o doador por inteiro.** Corpo igual ao do POST (sem `id`), mesmas validações e mensagens. Devolve **200** com o `DonorDTO` atualizado; id inexistente devolve **404**. Campo opcional ausente no corpo **vira nulo** (não mescla). O DTO de entrada é o mesmo do POST, por isso se chama `DonorRequestDTO` (e `AddressRequestDTO`).
+- **O CPF pode ser alterado.** A verificação de duplicidade exclui o próprio doador (`existsByCpfAndIdNot`), então atualizar sem mudar o CPF não devolve 409. CPF de outro doador devolve 409 com a mesma mensagem do cadastro; a restrição única do banco continua como rede de segurança (também 409).
+- **Endereço no PUT:** (1) sem endereço e corpo com `address`: cria; (2) com endereço e corpo com `address`: atualiza o registro existente **no lugar** (trocar o objeto por um novo faria o Hibernate dar `INSERT` antes do `DELETE` e violaria a unicidade de `donor_id`); (3) com endereço e corpo sem `address`: remove (`orphanRemoval`).
+- **`createdAt` nunca muda.** **`updatedAt` é a "última alteração"** e muda quando qualquer dado do doador ou do endereço mudar. Como o `@PreUpdate` só dispara se a linha do doador mudar, o service compara o `DonorDTO` de antes e de depois da cópia e, se forem diferentes, atribui `updatedAt`. PUT idêntico não altera `updatedAt`. O peso é normalizado para escala 1 (como a coluna `NUMERIC(4,1)`) e `complement` vazio vira nulo, para `70` e `70.0`, `""` e `null` não contarem como mudança.
+- **`DELETE /donors/{id}` devolve 204**, sem corpo; id inexistente devolve **404**. A exclusão é **definitiva** (sem exclusão lógica), pois os dados são pessoais e sensíveis. O endereço sai junto (`cascade`). O 404 vem de busca explícita antes de excluir, porque `deleteById` não lança erro para id inexistente.
+- Id não numérico no caminho devolve 400.
+
 ### Validações
 - `name`: obrigatório, 2 a 120 caracteres, sem espaços nas pontas. `cpf`: obrigatório, 11 dígitos, dígitos verificadores válidos (`@CPF`), único. `birthDate`: obrigatória, no passado. `gender`: obrigatório. `phone`: obrigatório, 10 ou 11 dígitos.
 - Opcionais: `rg` (até 20), `maritalStatus`, `bloodType`, `weight` (maior que 0 e até 300).

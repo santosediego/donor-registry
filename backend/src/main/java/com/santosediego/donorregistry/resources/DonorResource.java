@@ -8,7 +8,9 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.santosediego.donorregistry.dto.DonorDTO;
-import com.santosediego.donorregistry.dto.DonorInsertDTO;
+import com.santosediego.donorregistry.dto.DonorRequestDTO;
 import com.santosediego.donorregistry.dto.DonorSummaryDTO;
 import com.santosediego.donorregistry.services.DonorService;
 
@@ -48,10 +50,21 @@ public class DonorResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<DonorDTO> insert(@Valid @RequestBody DonorInsertDTO dto) {
+	public ResponseEntity<DonorDTO> insert(@Valid @RequestBody DonorRequestDTO dto) {
 		DonorDTO created = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.id())
 				.toUri();
 		return ResponseEntity.created(uri).body(created);
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<DonorDTO> update(@PathVariable Long id, @Valid @RequestBody DonorRequestDTO dto) {
+		return ResponseEntity.ok().body(service.update(id, dto));
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
