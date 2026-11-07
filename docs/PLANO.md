@@ -267,6 +267,12 @@ Cada enum tem `id` (código curto) e `description` (rótulo em português), mais
 - **Endereço:** opcional como um todo. Se for enviado, `street`, `number`, `neighborhood`, `zipCode`, `city` e `state` são obrigatórios; só `complement` é opcional. Endereço incompleto devolve 400 listando os campos. Limites: `zipCode` com 8 dígitos; `state` com 2 letras; `street` até 150, `number` até 10, `complement` até 100, `neighborhood` até 80, `city` até 100. A ONG atende um único município, então a cidade sozinha não diferencia nada; a regra de "todos ou nenhum" existe sobretudo para praticar validação entre campos, não por necessidade da fundação.
 - Mensagens de validação em português, sempre alinhadas com a regra.
 
+### Tipo sanguíneo (decisão)
+- O `bloodType` continua **opcional na API**; `null` significa "a confirmar".
+- **Quem obriga a escolha explícita é o front:** botões de A+ a O- mais "Não sei / a confirmar", nenhum marcado ao criar, e o Salvar só habilita depois de escolher.
+- A lista mostra "a confirmar" quando o tipo for nulo, e o filtro ganhará a opção "sem tipo".
+- Como o PUT é substituição completa, o formulário de edição precisa reenviar todos os campos que vieram do GET.
+
 ### Convenções
 - Sem `columnDefinition` específico de banco nas entidades. Enums sem setters. Sem anotações de Jackson nas entidades: o JSON é assunto dos DTOs.
 - Injeção por construtor, sem `@Autowired` em atributo. Sem Lombok e sem MapStruct: construtores, getters e setters escritos à mão, e mapeamento DTO ↔ entidade manual.
