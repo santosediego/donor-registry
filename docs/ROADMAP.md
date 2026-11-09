@@ -21,16 +21,22 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
   - **4.3** Atualizar e excluir (`PUT /donors/{id}` com substituição completa e `DELETE /donors/{id}` definitivo). Decisões em `docs/PLANO.md`, seção 7. Pronto quando: o PUT e o DELETE funcionam nos dois bancos; o CPF próprio não gera 409; os três casos de endereço (criar, alterar no lugar, remover) funcionam sem violar a unicidade de `donor_id`; `updatedAt` reflete alteração de doador ou de endereço; a exclusão devolve 204 e depois 404, sem deixar endereço órfão; e o roteiro de Postman escrito pelo Diego passa de ponta a ponta.
 - [ ] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA. Dividida em três níveis.
   - **5.1 Unitários puros** (sem Spring, sem banco, sem mocks): `DonorSearchQueries.likePattern` e `rgPattern`; códigos dos enums (`fromId`) e seus casos de erro; `ACCENTED` e `PLAIN` (em `DonorSearchQueries`) têm o mesmo tamanho, senão o `TRANSLATE` remove caracteres sem avisar.
-  - **5.2 API** (`@SpringBootTest` + MockMvc, perfil `test`, H2):
-    - Busca por RG ignora pontuação (`00000.199` acha `MG-00.000.199`; `.` não acha ninguém).
-    - Atualizar sem mudar o CPF não devolve 409; CPF de outro doador devolve 409.
-    - Endereço: criar, alterar e remover pelo PUT; campo opcional omitido no PUT vira nulo, sem 500.
-    - Excluir doador inexistente devolve 404; excluir doador apaga o endereço; alterar só o endereço atualiza `updatedAt`.
-    - Validação do nome nos limites: 1 caractere recusa, 2 aceita, 120 aceita, 121 recusa; espaços nas pontas e só espaços (**comportamento atual a descobrir**).
-    - `address` igual a `{}` devolve 400 listando os seis campos obrigatórios; `address` nulo passa.
-    - `PUT` sem `bloodType` apaga o tipo (PUT é substituição completa).
-    - `PUT` idêntico com peso `70` e `70.0` não muda `updatedAt`; idem com `complement` `""` contra nulo.
-    - `Instant` das respostas de POST e PUT vem com nanossegundos e o GET com microssegundos (considerar truncar ao gravar).
+  - **5.2 API** (`@SpringBootTest` + MockMvc, perfil `test`, H2). Dividida em três rodadas, cada uma com o seu PR:
+    - **5.2a: `POST /donors` e `GET /donors/{id}`**, mais a infraestrutura de teste de API (reaproveitada nas rodadas seguintes). Candidatos:
+      - `address` igual a `{}` devolve 400 listando os seis campos obrigatórios; `address` nulo passa.
+      - Validação do nome nos limites: 1 caractere recusa, 2 aceita, 120 aceita, 121 recusa; espaços nas pontas e só espaços (**comportamento atual a descobrir**).
+      - `birthDate` inválida (ex.: `2030-13-45`) cai no tratamento de corpo inválido (400).
+      - `birthDate` no futuro devolve 400 de validação.
+      - `Instant` da resposta do POST vem com nanossegundos e o do GET com microssegundos (considerar truncar ao gravar).
+    - **5.2b: `PUT /donors/{id}` e `DELETE /donors/{id}`.** Candidatos:
+      - Atualizar sem mudar o CPF não devolve 409; CPF de outro doador devolve 409.
+      - Endereço: criar, alterar e remover pelo PUT; campo opcional omitido no PUT vira nulo, sem 500.
+      - Excluir doador inexistente devolve 404; excluir doador apaga o endereço; alterar só o endereço atualiza `updatedAt`.
+      - `PUT` sem `bloodType` apaga o tipo (PUT é substituição completa).
+      - `PUT` idêntico com peso `70` e `70.0` não muda `updatedAt`; idem com `complement` `""` contra nulo.
+      - `Instant` da resposta do PUT vem com nanossegundos e o do GET com microssegundos.
+    - **5.2c: `GET /donors` (listagem, busca, paginação e ordenação).** Candidatos:
+      - Busca por RG ignora pontuação (`00000.199` acha `MG-00.000.199`; `.` não acha ninguém).
   - **5.3 PostgreSQL com Testcontainers** (só se a busca e a ordenação precisarem): busca sem acento só se prova com banco.
   - Pronto quando: cada cenário tem teste, e o Diego provou que cada teste falha quando o código é quebrado de propósito.
 - [ ] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
