@@ -92,11 +92,12 @@ public final class DonorResponseAssertions {
 	}
 
 	/**
-	 * The response carries nanoseconds (generated in memory); the database keeps microseconds.
-	 * Known behavior: compare at microsecond precision.
+	 * The response carries nanoseconds (generated in memory); the database keeps microseconds and
+	 * ROUNDS to the nearest one (seen in the tests: it does not truncate). Known behavior: to compare
+	 * the response with the database, round the response the same way.
 	 */
 	public static Instant micros(Instant instant) {
-		return instant.truncatedTo(ChronoUnit.MICROS);
+		return instant.plusNanos(500).truncatedTo(ChronoUnit.MICROS);
 	}
 
 	private static void expectValue(ResultActions result, String path, Object value) throws Exception {
