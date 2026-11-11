@@ -3,6 +3,9 @@ package com.santosediego.donorregistry.support;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.santosediego.donorregistry.entities.Address;
+import com.santosediego.donorregistry.entities.Donor;
+
 /**
  * Builds request bodies as maps. The test overrides only the field of its scenario
  * (body.put("cpf", ...)), so the scenario stays visible inside the test.
@@ -45,5 +48,34 @@ public final class DonorRequests {
 		address.put("city", "São Paulo");
 		address.put("state", "SP");
 		return address;
+	}
+
+	/** Body identical to what is stored for this donor (address included, when there is one). */
+	public static Map<String, Object> bodyOf(Donor donor) {
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("name", donor.getName());
+		body.put("cpf", donor.getCpf());
+		body.put("rg", donor.getRg());
+		body.put("birthDate", donor.getBirthDate().toString());
+		body.put("gender", donor.getGender());
+		body.put("maritalStatus", donor.getMaritalStatus());
+		body.put("bloodType", donor.getBloodType());
+		body.put("phone", donor.getPhone());
+		body.put("weight", donor.getWeight());
+		Address a = donor.getAddress();
+		if (a == null) {
+			body.put("address", null);
+		} else {
+			Map<String, Object> address = new LinkedHashMap<>();
+			address.put("street", a.getStreet());
+			address.put("number", a.getNumber());
+			address.put("complement", a.getComplement());
+			address.put("neighborhood", a.getNeighborhood());
+			address.put("zipCode", a.getZipCode());
+			address.put("city", a.getCity());
+			address.put("state", a.getState());
+			body.put("address", address);
+		}
+		return body;
 	}
 }
