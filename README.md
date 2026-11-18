@@ -8,7 +8,7 @@ Sistema de registro de doadores de sangue para dias de coleta, com cadastro, bus
 
 ## Status
 
-Em desenvolvimento, sem versão publicada. O estado de cada parte está em [`docs/ROADMAP.md`](docs/ROADMAP.md).
+O estado de cada parte está em [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 **Já existe** (`backend/`, uma API REST em Spring Boot):
 
@@ -16,14 +16,14 @@ Em desenvolvimento, sem versão publicada. O estado de cada parte está em [`doc
 - Consulta por id (`GET /donors/{id}`).
 - Listagem paginada com busca por nome, CPF e RG (`GET /donors`).
 - Atualização completa (`PUT /donors/{id}`) e exclusão definitiva (`DELETE /donors/{id}`).
-- Suíte de testes automatizados (80 testes).
+- Suíte de testes automatizados.
 
 **Ainda não existe** (ver o ROADMAP): autenticação, front-end, relatório, exportação em CSV, backup, integração contínua (CI), versionamento automatizado e distribuição com Docker.
 
 ## Dados fictícios
 
 > [!WARNING]
-> Todos os dados de exemplo, de teste e de documentação deste repositório são **fictícios**. O repositório não contém dados pessoais reais, e não deve conter: nomes, CPFs, telefones e endereços dos exemplos foram inventados.
+> Todos os dados de exemplo, de teste e de documentação deste repositório são **fictícios**.
 
 ## Stack
 
@@ -39,13 +39,23 @@ Em desenvolvimento, sem versão publicada. O estado de cada parte está em [`doc
 
 ## Como rodar localmente
 
-Todos os comandos partem da pasta `backend/`.
-
 **Pré-requisito:** JDK 25. O Maven não precisa estar instalado, pois o projeto usa o Maven Wrapper.
+
+### Perfis do Spring
+
+A variável de ambiente `APP_PROFILE` escolhe o perfil. Se ela não for definida, vale `dev`.
+
+| Perfil | Banco | Dados de exemplo |
+|--------|-------|------------------|
+| `dev` (padrão) | PostgreSQL | Sim |
+| `test` | H2 em memória | Sim |
+| `prod` | PostgreSQL | Não |
+
+O perfil `prod` só lê variáveis de ambiente, sem valores padrão.
 
 ### Modo demonstração (caminho mais curto)
 
-Usa o H2 em memória: não precisa de PostgreSQL nem de configuração. Os dados somem quando a aplicação para. O banco já vem com 16 doadores fictícios de exemplo.
+Usa o perfil `test` (H2 em memória): não precisa de PostgreSQL nem de configuração. Os dados somem quando a aplicação para. O banco já vem com 16 doadores de exemplo.
 
 ```bash
 cd backend
@@ -56,7 +66,13 @@ A API sobe em `http://localhost:8080`.
 
 ### Modo desenvolvimento (PostgreSQL)
 
-A aplicação exige um **PostgreSQL 17 acessível**, com um banco já criado (o Liquibase cria as tabelas e carrega os dados de exemplo). Como ele é instalado ou executado fica a seu critério.
+Usa o perfil `dev`. A aplicação exige:
+
+- PostgreSQL 17;
+- um banco já criado;
+- um usuário com permissão para criar tabelas.
+
+O Liquibase cria as tabelas e carrega os dados de exemplo na primeira execução.
 
 1. Copie o modelo de variáveis e preencha com os dados do seu banco. O arquivo `.env` está no `.gitignore`; nunca o versione.
 
@@ -67,7 +83,6 @@ A aplicação exige um **PostgreSQL 17 acessível**, com um banco já criado (o 
 
    | Variável | Para que serve |
    |----------|----------------|
-   | `APP_PROFILE` | Perfil do Spring: `dev` (padrão) ou `test` |
    | `DB_URL` | URL JDBC, por exemplo `jdbc:postgresql://localhost:5432/donor_registry_dev` |
    | `DB_USERNAME` | Usuário do banco |
    | `DB_PASSWORD` | Senha do banco |
@@ -80,17 +95,9 @@ A aplicação exige um **PostgreSQL 17 acessível**, com um banco já criado (o 
    ./mvnw spring-boot:run
    ```
 
-### Perfis do Spring
-
-| Perfil | Banco | Uso |
-|--------|-------|-----|
-| `dev` (padrão) | PostgreSQL | Desenvolvimento, com dados de exemplo |
-| `test` | H2 em memória | Testes automatizados e demonstração |
-| `prod` | PostgreSQL | Só variáveis de ambiente, sem dados de exemplo |
-
 ### Exemplo de uso
 
-Criar um doador (dados fictícios):
+Com a API no ar, crie um doador. O CPF precisa ter dígitos verificadores válidos; o do exemplo é um CPF de teste válido.
 
 ```bash
 curl -i -X POST http://localhost:8080/donors \
@@ -120,7 +127,7 @@ cd backend
 ./mvnw test
 ```
 
-Hoje são **80 testes**, e todos passam. Eles usam o perfil `test` (H2 em memória), então não precisam de PostgreSQL.
+Todos os testes devem passar. Eles usam o perfil `test` (H2 em memória), então não precisam de PostgreSQL.
 
 ## Documentação
 
@@ -132,8 +139,6 @@ Hoje são **80 testes**, e todos passam. Eles usam o perfil `test` (H2 em memór
 
 Este projeto é um exercício de **desenvolvimento delegado a uma IA**. O código foi gerado pelo Claude Code; eu escrevi os cenários de teste, revisei cada PR e fiz todos os merges. O trabalho é dividido em partes: uma branch por parte, um PR para cada, e testes com verificações propositais ("quebrar o código" para provar que o teste falha) em cada etapa.
 
-## Contribuição e licença
+## Licença
 
-Por enquanto o projeto é conduzido por uma única pessoa, e não há guia de contribuição.
-
-Licença: [MIT](LICENSE).
+[MIT](LICENSE)
