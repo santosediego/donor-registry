@@ -22,7 +22,7 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
 - [ ] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA. Dividida em três níveis.
   - **5.1 Unitários puros** (sem Spring, sem banco, sem mocks): `DonorSearchQueries.likePattern` e `rgPattern`; códigos dos enums (`fromId`) e seus casos de erro; `ACCENTED` e `PLAIN` (em `DonorSearchQueries`) têm o mesmo tamanho, senão o `TRANSLATE` remove caracteres sem avisar.
   - **5.2 API** (`@SpringBootTest` + MockMvc, perfil `test`, H2). Dividida em três rodadas, cada uma com o seu PR:
-    - **5.2a: `POST /donors` e `GET /donors/{id}`**, mais a infraestrutura de teste de API (reaproveitada nas rodadas seguintes). Candidatos:
+    - [x] **5.2a: `POST /donors` e `GET /donors/{id}`**, mais a infraestrutura de teste de API (reaproveitada nas rodadas seguintes). Candidatos:
       - `address` igual a `{}` devolve 400 listando os seis campos obrigatórios; `address` nulo passa.
       - Validação do nome nos limites: 1 caractere recusa, 2 aceita, 120 aceita, 121 recusa; espaços nas pontas e só espaços (**comportamento atual a descobrir**).
       - `birthDate` inválida (ex.: `2030-13-45`) cai no tratamento de corpo inválido (400).
@@ -35,6 +35,11 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
       - `PUT` sem `bloodType` apaga o tipo (PUT é substituição completa).
       - `PUT` idêntico com peso `70` e `70.0` não muda `updatedAt`; idem com `complement` `""` contra nulo.
       - `Instant` da resposta do PUT vem com nanossegundos e o do GET com microssegundos.
+      - No PUT, o corpo pode trazer `id`, `createdAt` e `updatedAt`: a API os ignora.
+      - PUT que muda o CPF para um CPF livre grava o novo e libera o antigo.
+      - Fallback da restrição única do banco devolve 409 quando a checagem prévia de CPF não enxerga o duplicado (POST e PUT).
+      - `tb_address` não tem `NOT NULL` nas colunas obrigatórias do endereço: a validação do DTO é a única trava (avaliar `NOT NULL` no banco).
+      - Silenciar os avisos do Mockito/agente dinâmico do Java 25 (configurar o agente no Maven).
     - **5.2c: `GET /donors` (listagem, busca, paginação e ordenação).** Candidatos:
       - Busca por RG ignora pontuação (`00000.199` acha `MG-00.000.199`; `.` não acha ninguém).
   - **5.3 PostgreSQL com Testcontainers** (só se a busca e a ordenação precisarem): busca sem acento só se prova com banco.

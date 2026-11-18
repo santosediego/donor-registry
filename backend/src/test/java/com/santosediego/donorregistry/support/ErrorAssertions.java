@@ -42,4 +42,17 @@ public final class ErrorAssertions {
 		assertThat(errors).as("one entry per field").hasSize(expected.size());
 		assertThat(actual).containsExactlyInAnyOrderEntriesOf(expected);
 	}
+
+	/**
+	 * Like assertFieldErrors, but a field may have more than one message (the Map version
+	 * would keep only one per field). Compares (fieldName, message) pairs, in any order.
+	 */
+	public static void assertFieldErrorList(ResultActions result, List<Map.Entry<String, String>> expected)
+			throws Exception {
+		List<Map<String, String>> errors = JsonPath.read(result.andReturn().getResponse().getContentAsString(),
+				"$.errors");
+		List<Map.Entry<String, String>> actual = errors.stream()
+				.map(e -> Map.entry(e.get("fieldName"), e.get("message"))).toList();
+		assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
+	}
 }
