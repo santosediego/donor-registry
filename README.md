@@ -27,8 +27,8 @@ O estado de cada parte está em [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Stack
 
-| Item | Versão |
-|------|--------|
+| Item | Tecnologia |
+|------|------------|
 | Java | 25 (LTS) |
 | Spring Boot | 4.1.2 |
 | Maven | via Maven Wrapper (`./mvnw`) |
@@ -51,11 +51,9 @@ A variável de ambiente `APP_PROFILE` escolhe o perfil. Se ela não for definida
 | `test` | H2 em memória | Sim |
 | `prod` | PostgreSQL | Não |
 
-O perfil `prod` só lê variáveis de ambiente, sem valores padrão.
-
 ### Modo demonstração (caminho mais curto)
 
-Usa o perfil `test` (H2 em memória): não precisa de PostgreSQL nem de configuração. Os dados somem quando a aplicação para. O banco já vem com 16 doadores de exemplo.
+Usa o perfil `test` (H2 em memória): não precisa de PostgreSQL nem de configuração. Os dados somem quando a aplicação para. O banco já vem com doadores de exemplo.
 
 ```bash
 cd backend
@@ -87,7 +85,7 @@ O Liquibase cria as tabelas e carrega os dados de exemplo na primeira execução
    | `DB_USERNAME` | Usuário do banco |
    | `DB_PASSWORD` | Senha do banco |
 
-   Não há valor padrão para usuário e senha: se faltar variável, a aplicação não sobe. As mesmas variáveis também podem ser definidas no ambiente, em vez do `.env`.
+   Nenhuma das três variáveis tem valor padrão: se faltar alguma, a aplicação não sobe. As mesmas variáveis também podem ser definidas no ambiente, em vez do `.env`.
 
 2. Inicie a API:
 
