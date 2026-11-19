@@ -1,9 +1,9 @@
 package com.santosediego.donorregistry.support;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -24,13 +24,19 @@ public final class ErrorAssertions {
 
 	public static void assertStandardError(ResultActions result, int status, String error, String message,
 			String path, Instant before, Instant after) throws Exception {
-		result.andExpect(status().is(status))
-				.andExpect(jsonPath("$.status").value(status))
-				.andExpect(jsonPath("$.error").value(error))
-				.andExpect(jsonPath("$.message").value(message))
-				.andExpect(jsonPath("$.path").value(path));
-		String timestamp = JsonPath.read(result.andReturn().getResponse().getContentAsString(), "$.timestamp");
-		assertThat(Instant.parse(timestamp)).isBetween(before, after);
+		result.andExpect(status().is(status));
+		assertStandardErrorBody(result.andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), status,
+				error, message, path, before, after);
+	}
+
+	/** Same check on a response body that did not come from MockMvc (e.g. a real server). */
+	public static void assertStandardErrorBody(String body, int status, String error, String message, String path,
+			Instant before, Instant after) {
+		assertThat(JsonPath.<Integer>read(body, "$.status")).isEqualTo(status);
+		assertThat(JsonPath.<String>read(body, "$.error")).isEqualTo(error);
+		assertThat(JsonPath.<String>read(body, "$.message")).isEqualTo(message);
+		assertThat(JsonPath.<String>read(body, "$.path")).isEqualTo(path);
+		assertThat(Instant.parse(JsonPath.<String>read(body, "$.timestamp"))).isBetween(before, after);
 	}
 
 	/** Checks the `errors` list: exactly these fields with these messages, in any order. */
