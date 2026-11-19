@@ -43,6 +43,7 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
     - **5.2c: `GET /donors` (listagem, busca, paginação e ordenação).** Candidatos:
       - Busca por RG ignora pontuação (`00000.199` acha `MG-00.000.199`; `.` não acha ninguém).
   - **5.3 PostgreSQL com Testcontainers** (só se a busca e a ordenação precisarem): busca sem acento só se prova com banco.
+    - Candidato: ordenação por `name` com acento, hífen e maiúscula pode diferir entre H2 e PostgreSQL (collation); só se prova com banco.
   - Pronto quando: cada cenário tem teste, e o Diego provou que cada teste falha quando o código é quebrado de propósito.
 - [ ] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
   - Pronto quando: um PR com teste quebrado fica bloqueado para merge.
