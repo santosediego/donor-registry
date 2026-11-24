@@ -84,7 +84,7 @@ class DonorResourceDeleteTest extends ApiTestSupport {
 		Instant after = Instant.now();
 
 		// Assert
-		assertStandardError(result, 400, "Requisição inválida", "Valor inválido para o parâmetro 'id'.",
+		assertStandardError(result, 401, "Requisição inválida", "Valor inválido para o parâmetro 'id'.",
 				"/donors/abc", before, after);
 		assertThat(repository.count()).isEqualTo(countBefore);
 	}
