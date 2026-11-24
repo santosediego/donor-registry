@@ -19,7 +19,7 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
   - [x] **4.1** Criar e buscar por id, com DTOs, validações e tratamento global de exceções (`StandardError`, `ResourceNotFoundException`, `ResourceExceptionHandler`). Conferir também o `createdAt` contra o relógio. Pronto quando: o POST cria, o GET por id devolve o doador e um id inexistente devolve 404 no formato padrão.
   - [x] **4.2** Listagem paginada com busca por nome, CPF e RG (`GET /donors`). Pronto quando: a busca pagina, ordena e filtra; a busca usa `LEFT JOIN` com projeção direta no DTO (não `LEFT JOIN FETCH`), então doador sem endereço aparece nos resultados, sem consultas em excesso (N+1): uma página gera 2 consultas (dados e contagem).
   - [x] **4.3** Atualizar e excluir (`PUT /donors/{id}` com substituição completa e `DELETE /donors/{id}` definitivo). Decisões em `docs/PLANO.md`, seção 7. Pronto quando: o PUT e o DELETE funcionam nos dois bancos; o CPF próprio não gera 409; os três casos de endereço (criar, alterar no lugar, remover) funcionam sem violar a unicidade de `donor_id`; `updatedAt` reflete alteração de doador ou de endereço; a exclusão devolve 204 e depois 404, sem deixar endereço órfão; e o roteiro de Postman escrito pelo Diego passa de ponta a ponta.
-- [ ] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA. Dividida em três níveis.
+- [x] **5. Testes (AAA):** cenários escritos pelo Diego, implementados pela IA. Dividida em três níveis.
   - [x] **5.1 Unitários puros** (sem Spring, sem banco, sem mocks): `DonorSearchQueries.likePattern` e `rgPattern`; códigos dos enums (`fromId`) e seus casos de erro; `ACCENTED` e `PLAIN` (em `DonorSearchQueries`) têm o mesmo tamanho, senão o `TRANSLATE` remove caracteres sem avisar.
   - **5.2 API** (`@SpringBootTest` + MockMvc, perfil `test`, H2). Dividida em três rodadas, cada uma com o seu PR:
     - [x] **5.2a: `POST /donors` e `GET /donors/{id}`**, mais a infraestrutura de teste de API (reaproveitada nas rodadas seguintes). Candidatos:
@@ -40,11 +40,11 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
       - Fallback da restrição única do banco devolve 409 quando a checagem prévia de CPF não enxerga o duplicado (POST e PUT).
       - `tb_address` não tem `NOT NULL` nas colunas obrigatórias do endereço: a validação do DTO é a única trava (avaliar `NOT NULL` no banco).
       - Silenciar os avisos do Mockito/agente dinâmico do Java 25 (configurar o agente no Maven).
-    - **5.2c: `GET /donors` (listagem, busca, paginação e ordenação).** Candidatos:
+    - [x] **5.2c: `GET /donors` (listagem, busca, paginação e ordenação).** Candidatos:
       - Busca por RG ignora pontuação (`00000.199` acha `MG-00.000.199`; `.` não acha ninguém).
-  - **5.3 PostgreSQL com Testcontainers** (só se a busca e a ordenação precisarem): busca sem acento só se prova com banco.
+  - **5.3 PostgreSQL com Testcontainers** (não feita; só se mexermos na busca ou na ordenação): busca sem acento só se prova com banco.
     - Candidato: ordenação por `name` com acento, hífen e maiúscula pode diferir entre H2 e PostgreSQL (collation); só se prova com banco.
-  - Pronto quando: cada cenário tem teste, e o Diego provou que cada teste falha quando o código é quebrado de propósito.
+  - Pronto quando: cada cenário das partes 5.1 e 5.2 tem teste (a 5.3 fica fora, ver acima), e o Diego provou que cada teste falha quando o código é quebrado de propósito.
 - [ ] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
   - Pronto quando: um PR com teste quebrado fica bloqueado para merge.
 - [ ] **7. Versionamento:** SemVer automatizado com release-please (gera o PR de release, o `CHANGELOG.md`, a tag `vX.Y.Z` e o GitHub Release a partir dos commits). Decidir aqui o tipo de merge (squash ou merge commit) e o comportamento nas versões `0.x`.
