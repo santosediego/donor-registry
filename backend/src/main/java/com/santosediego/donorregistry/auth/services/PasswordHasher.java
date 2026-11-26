@@ -2,6 +2,8 @@ package com.santosediego.donorregistry.auth.services;
 
 import java.text.Normalizer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -11,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * so every password becomes NFC before it is hashed, verified or measured.
  */
 public class PasswordHasher {
+
+	private static final Logger LOG = LoggerFactory.getLogger(PasswordHasher.class);
 
 	/** Longest password accepted, in code points, after normalization. */
 	public static final int MAX_LENGTH = 128;
@@ -40,8 +44,27 @@ public class PasswordHasher {
 	}
 
 	public boolean matches(String rawPassword, String passwordHash) {
+		return matches(rawPassword, passwordHash, null);
+	}
+
+	/**
+	 * False for a wrong password and also for a stored hash that cannot be read.
+	 * accountId (may be null) only identifies the account in the warning about such a hash.
+	 */
+	public boolean matches(String rawPassword, String passwordHash, Long accountId) {
 		String password = prepare(rawPassword);
-		return password != null && passwordHash != null && encoder.matches(password, passwordHash);
+		if (password == null || passwordHash == null) {
+			return false;
+		}
+		try {
+			return encoder.matches(password, passwordHash);
+		} catch (ArrayIndexOutOfBoundsException // a part of the hash is missing
+				| IllegalStateException // the final part is too short
+				| UnsupportedOperationException e) { // unknown Argon2 version
+			// The exception is left out on purpose: nothing taken from the hash goes to the log
+			LOG.warn("Malformed password hash; password rejected. Account id: {}", accountId);
+			return false;
+		}
 	}
 
 	// Normalized password, or null when it must not reach the algorithm (missing, empty or too long)
