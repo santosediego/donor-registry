@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changes/003-seed-donors.yaml
   - include:
       file: db/changelog/changes/004-seed-addresses.yaml
+  - include:
+      file: db/changelog/changes/005-create-user-account-table.yaml
