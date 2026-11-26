@@ -56,15 +56,37 @@ public class PasswordHasher {
 		if (password == null || passwordHash == null) {
 			return false;
 		}
-		try {
-			return encoder.matches(password, passwordHash);
-		} catch (ArrayIndexOutOfBoundsException // a part of the hash is missing
-				| IllegalStateException // the final part is too short
-				| UnsupportedOperationException e) { // unknown Argon2 version
-			// The exception is left out on purpose: nothing taken from the hash goes to the log
-			LOG.warn("Malformed password hash; password rejected. Account id: {}", accountId);
+		if (!isReadable(passwordHash)) {
+			warnMalformedHash(accountId);
 			return false;
 		}
+		try {
+			return encoder.matches(password, passwordHash);
+		} catch (IllegalStateException // the final part is too short
+				| UnsupportedOperationException e) { // unknown Argon2 version
+			warnMalformedHash(accountId);
+			return false;
+		}
+	}
+
+	// upgradeEncoding only decodes the hash. Asking it first matters: for these errors matches() would
+	// handle some by itself (warning without the account id) and let others escape.
+	private boolean isReadable(String passwordHash) {
+		if (passwordHash.isEmpty()) {
+			return false;
+		}
+		try {
+			encoder.upgradeEncoding(passwordHash);
+			return true;
+		} catch (IllegalArgumentException // unexpected format or invalid base64
+				| ArrayIndexOutOfBoundsException e) { // a part of the hash is missing
+			return false;
+		}
+	}
+
+	// No exception and no hash in the message: nothing taken from the hash goes to the log
+	private static void warnMalformedHash(Long accountId) {
+		LOG.warn("Malformed password hash; password rejected. Account id: {}", accountId);
 	}
 
 	// Normalized password, or null when it must not reach the algorithm (missing, empty or too long)
