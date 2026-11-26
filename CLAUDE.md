@@ -68,6 +68,7 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - Este repo é público e o sistema guarda dados sensíveis. **Nenhum dado real** no código, testes, exemplos ou histórico: nada de nome da ONG, logo, telefone ou CPF de pessoa real. Dados de exemplo são fictícios.
 - Nenhum segredo no repositório. `.env` no `.gitignore`; deixe um `.env.example` sem valores reais.
 - Não escreva CPF, senha ou token em log.
+  - Valores de colunas (CPF, hash, nome de usuário) não aparecem em exceção nem em log; use o id.
 
 ## Comandos
 
