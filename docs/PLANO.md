@@ -56,7 +56,7 @@ A ordem, o status e o critério de "pronto" de cada parte ficam em `docs/ROADMAP
 
 ### Trilha de fundação (resumo)
 
-0. Preparar o repositório. 1. Esqueleto Spring Boot. 2. Configuração (Liquibase, perfis, `.env`). 3. Modelo: `Donor` (3.1), `Address` (3.2), dados de exemplo (3.3). 4. CRUD de doador: criar e buscar por id (4.1), listagem paginada com filtro (4.2), atualizar e excluir (4.3). 5. Testes AAA. 6. CI (GitHub Actions). 7. Versionamento (release-please).
+0. Preparar o repositório. 1. Esqueleto Spring Boot. 2. Configuração (Liquibase, perfis, `.env`). 3. Modelo: `Donor` (3.1), `Address` (3.2), dados de exemplo (3.3). 4. CRUD de doador: criar e buscar por id (4.1), listagem paginada com filtro (4.2), atualizar e excluir (4.3). 5. Testes AAA. 6. CI (GitHub Actions). 7. Autenticação (7.1 a 7.5). 8. Versionamento (release-please).
 
 ### Parte 5: testes (como fazer)
 
@@ -74,7 +74,7 @@ A ordem do backlog é definida depois da Parte 5. Cada tema abaixo vira uma ou m
 - **Um único usuário (administrador).** Não há cadastro de usuários nem níveis de acesso. "Acessos" significa: logado entra, não logado recebe 401.
 - **Limitação consciente:** com um administrador só, uma conta compartilhada não registra quem fez o quê.
 - **Sessões em memória:** reiniciar o servidor desloga todos. Aceitável.
-- **Pacote próprio:** autenticação, 2FA, recuperação e configurações não dependem das classes de doador (`Donor`, `Address`...).
+- **Pacote próprio (`auth`), com subpacotes por camada:** autenticação, 2FA, recuperação e configurações não dependem das classes de doador (`Donor`, `Address`...). O motivo é a coesão e o isolamento do domínio de autenticação; o módulo não é feito para ser reaproveitado em outros projetos.
 - **Decisão em aberto (decidir antes da Parte 7.3): topologia front/API.** Cookie de sessão exige front e API no **mesmo site** (mesmo domínio, subdomínios do mesmo domínio ou atrás de um proxy reverso). Se o front puder ficar em domínio diferente, o cookie `SameSite=None` é frágil (Safari e Firefox bloqueiam cookie de terceiros) e a alternativa seria token no cabeçalho.
 - **Primeiro uso:** criar o administrador (usuário e senha escolhidos) **ou** restaurar um backup.
 - ~~**Segredo do JWT gerado na primeira execução**, guardado em arquivo local (fora do repositório e fora do backup).~~ Substituído pela decisão de sessão: não existe segredo de JWT.
@@ -117,7 +117,7 @@ Opcional para quem usa: **desligado por padrão**, ativado em Configurações. S
 - **Segredo cifrado no banco** (não pode ser hash, o servidor precisa dele), com chave gerada na instalação e **incluído no backup** (que já é cifrado), para a restauração não trancar o administrador.
 - **Login:** senha primeiro, depois o código; limite de tentativas também no segundo passo.
 - **Perdeu o celular:** código de recuperação ou comando de redefinição do administrador; ambos desligam o 2FA. Como o código passa a valer pelos dois fatores, precisa ser tratado como a chave mestra: aparece uma vez, hash no banco, limite de tentativas.
-- **Reaproveitamento (também em projeto particular):** manter autenticação, 2FA, código de recuperação, backup e configurações num pacote próprio, sem depender das classes de doador (`Donor`, `Address`...). Assim dá para copiar o conjunto para outro projeto. Basta separar por pacote; um módulo Maven só se a necessidade aparecer.
+- **Isolamento:** manter autenticação, 2FA, código de recuperação, backup e configurações num pacote próprio, sem depender das classes de doador (`Donor`, `Address`...), por coesão e isolamento do domínio. Basta separar por pacote.
 
 
 ### Configurações da entidade
@@ -348,6 +348,6 @@ Notas:
 - ~~**Autenticação:** JWT ou sessão (decidir ao chegar na etapa).~~ Substituído: decidido por sessão com cookie.
 - **Topologia front/API** (mesmo site ou domínios diferentes): decidir antes da Parte 7.3; ver seção 4, Autenticação.
 - **Formato do código de recuperação** (caracteres ou palavras em português): decidir na etapa de autenticação; ver "Decisão adiada" na seção 9. Qualquer lista de palavras precisa ser livre.
-- **Tipo de merge** (squash ou merge commit) e comportamento do release-please nas versões `0.x`: decidir na Parte 7.
+- **Tipo de merge** (squash ou merge commit) e comportamento do release-please nas versões `0.x`: decidir na Parte 8.
 - **Testcontainers** (testar contra PostgreSQL real em vez de só H2): decidir depois da Parte 5.
-- **Repositório template** extraído deste projeto, depois da Parte 7.
+- **Repositório template** extraído deste projeto, depois da Parte 8.
