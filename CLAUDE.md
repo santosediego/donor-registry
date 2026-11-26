@@ -37,7 +37,7 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 ## Versionamento
 
 - Versionamento semântico (`MAJOR.MINOR.PATCH`). A versão vive **só no `pom.xml`**. Enquanto for `0.x`, a API é considerada instável.
-- **Não altere a versão, crie tags nem edite `CHANGELOG.md` na mão.** Isso será automatizado (ver `docs/ROADMAP.md`, Parte 7).
+- **Não altere a versão, crie tags nem edite `CHANGELOG.md` na mão.** Isso será automatizado (ver `docs/ROADMAP.md`, Parte 8).
 - O tipo do commit decide a versão, então use o tipo certo: `fix:` = patch, `feat:` = minor, `feat!:` ou rodapé `BREAKING CHANGE:` = major. `docs:`, `test:`, `refactor:` e `chore:` não geram versão. Não rotule funcionalidade nova como `chore:`.
 
 ## Idioma
@@ -60,7 +60,7 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - **Endereço é opcional:** o doador pode não ter endereço (relação 1:1 opcional).
 - **Enums:** código curto e descrição em português (campos `id` e `description`, mais o método estático `fromId`), persistidos como texto, nunca ordinal.
 - **Properties:** `application.properties` + perfis `test` (H2 em memória, `MODE=PostgreSQL`), `dev` e `prod` (PostgreSQL). O perfil padrão é `dev`; os testes ativam `test` com `@ActiveProfiles("test")`. **Sem valor padrão para segredo ou senha** em nenhum perfil com PostgreSQL (o H2 em memória do perfil `test` usa `sa` e senha vazia): se faltar variável de ambiente, a aplicação falha ao subir (a mensagem de erro pode ser indireta; ver `.env.example`). `spring.jpa.open-in-view=false`.
-- **Banco:** só Liquibase, também nos testes (o perfil `test` não desliga o Liquibase). Arquivos numerados (`001-create-donor-table.yaml`), incluídos no `db.changelog-master.yaml`; dados de exemplo em changeSet com contexto `dev`/`test`, nunca em `prod`. Até a primeira release (Parte 7), changeSets aplicados podem ser editados diretamente e o Diego recria o banco de dev. A partir da primeira release, um changeSet aplicado nunca é editado: crie outro. Schema `public` padrão. Sem `columnDefinition` específico de banco. Dados de exemplo: sem id informado (o banco gera), created_at fixo em UTC, CPFs fictícios válidos, contexto dev,test.
+- **Banco:** só Liquibase, também nos testes (o perfil `test` não desliga o Liquibase). Arquivos numerados (`001-create-donor-table.yaml`), incluídos no `db.changelog-master.yaml`; dados de exemplo em changeSet com contexto `dev`/`test`, nunca em `prod`. Até a primeira release (Parte 8), changeSets aplicados podem ser editados diretamente e o Diego recria o banco de dev. A partir da primeira release, um changeSet aplicado nunca é editado: crie outro. Schema `public` padrão. Sem `columnDefinition` específico de banco. Dados de exemplo: sem id informado (o banco gera), created_at fixo em UTC, CPFs fictícios válidos, contexto dev,test.
 - **Frontend (quando chegar):** React + TypeScript + Vite em `frontweb/`. **Use `yarn`, nunca `npm`.**
 
 ## Segurança e privacidade
@@ -68,6 +68,7 @@ O autor (Diego) usa este projeto para **aprender a delegar desenvolvimento à IA
 - Este repo é público e o sistema guarda dados sensíveis. **Nenhum dado real** no código, testes, exemplos ou histórico: nada de nome da ONG, logo, telefone ou CPF de pessoa real. Dados de exemplo são fictícios.
 - Nenhum segredo no repositório. `.env` no `.gitignore`; deixe um `.env.example` sem valores reais.
 - Não escreva CPF, senha ou token em log.
+  - Valores de colunas (CPF, hash, nome de usuário) não aparecem em exceção nem em log; use o id.
 
 ## Comandos
 

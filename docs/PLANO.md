@@ -14,7 +14,7 @@ Documento de trabalho para o desenvolvimento do projeto, pensado para ser usado 
 | Tema | Decisão |
 |------|---------|
 | Tipo de aplicação | Roda local **ou hospedado**, o mesmo sistema nos dois casos (nenhuma tela ou texto preso a "este computador") |
-| Login | Mantido, com **um único administrador** (sem CRUD de usuários nem papéis). JWT ou sessão: decidir na etapa de autenticação |
+| Login | Mantido, com **um único administrador** (sem CRUD de usuários nem papéis). **Sessão com cookie** (ver seção 4, Autenticação). ~~JWT ou sessão: decidir na etapa de autenticação~~ (substituído) |
 | Senha padrão | Não existe: o primeiro uso pede a senha do administrador |
 | Recuperação | Código de recuperação (formato a decidir na etapa de autenticação), mostrado uma única vez; se perder também o código, comando de **redefinição do administrador** rodado no terminal do servidor |
 | Contato, nome da entidade e logo | Viram **configuração** (tabela e tela), saem do código |
@@ -56,7 +56,7 @@ A ordem, o status e o critério de "pronto" de cada parte ficam em `docs/ROADMAP
 
 ### Trilha de fundação (resumo)
 
-0. Preparar o repositório. 1. Esqueleto Spring Boot. 2. Configuração (Liquibase, perfis, `.env`). 3. Modelo: `Donor` (3.1), `Address` (3.2), dados de exemplo (3.3). 4. CRUD de doador: criar e buscar por id (4.1), listagem paginada com filtro (4.2), atualizar e excluir (4.3). 5. Testes AAA. 6. CI (GitHub Actions). 7. Versionamento (release-please).
+0. Preparar o repositório. 1. Esqueleto Spring Boot. 2. Configuração (Liquibase, perfis, `.env`). 3. Modelo: `Donor` (3.1), `Address` (3.2), dados de exemplo (3.3). 4. CRUD de doador: criar e buscar por id (4.1), listagem paginada com filtro (4.2), atualizar e excluir (4.3). 5. Testes AAA. 6. CI (GitHub Actions). 7. Autenticação (7.1 a 7.5). 8. Versionamento (release-please).
 
 ### Parte 5: testes (como fazer)
 
@@ -68,10 +68,16 @@ A ordem, o status e o critério de "pronto" de cada parte ficam em `docs/ROADMAP
 
 A ordem do backlog é definida depois da Parte 5. Cada tema abaixo vira uma ou mais partes no ROADMAP quando chegar a vez.
 
-### Autenticação (proposta com JWT; JWT ou sessão ainda a decidir)
-- **Autenticação com JWT:** login com usuário e senha, token assinado e validado por um filtro do Spring Security. Sem OAuth2 e sem `client-id`/`client-secret`. Algoritmo de assinatura e duração do token definidos nesta etapa.
+### Autenticação (sessão com cookie; ~~proposta com JWT; JWT ou sessão ainda a decidir~~ substituído)
+- **Decisão: sessão com cookie, não JWT.** Login com usuário e senha. Sem OAuth2 e sem `client-id`/`client-secret`.
+  - ~~**Autenticação com JWT:** token assinado e validado por um filtro do Spring Security; algoritmo de assinatura e duração do token definidos nesta etapa.~~ Substituído pela sessão.
+- **Um único usuário (administrador).** Não há cadastro de usuários nem níveis de acesso. "Acessos" significa: logado entra, não logado recebe 401.
+- **Limitação consciente:** com um administrador só, uma conta compartilhada não registra quem fez o quê.
+- **Sessões em memória:** reiniciar o servidor desloga todos. Aceitável.
+- **Pacote próprio (`auth`), com subpacotes por camada:** autenticação, 2FA, recuperação e configurações não dependem das classes de doador (`Donor`, `Address`...). O motivo é a coesão e o isolamento do domínio de autenticação; o módulo não é feito para ser reaproveitado em outros projetos.
+- **Decisão em aberto (decidir antes da Parte 7.3): topologia front/API.** Cookie de sessão exige front e API no **mesmo site** (mesmo domínio, subdomínios do mesmo domínio ou atrás de um proxy reverso). Se o front puder ficar em domínio diferente, o cookie `SameSite=None` é frágil (Safari e Firefox bloqueiam cookie de terceiros) e a alternativa seria token no cabeçalho.
 - **Primeiro uso:** criar o administrador (usuário e senha escolhidos) **ou** restaurar um backup.
-- **Segredo do JWT gerado na primeira execução**, guardado em arquivo local (fora do repositório e fora do backup).
+- ~~**Segredo do JWT gerado na primeira execução**, guardado em arquivo local (fora do repositório e fora do backup).~~ Substituído pela decisão de sessão: não existe segredo de JWT.
 - **Código de recuperação** gerado no primeiro uso, mostrado uma vez e guardado só como hash.
 - Tela de redefinir senha pelo código e "Alterar senha" nas configurações.
 - **Código de recuperação: formato a decidir quando chegarmos nesta etapa** (ver "Decisão adiada" abaixo). Vale em qualquer formato: sorteio com `SecureRandom`, normalização antes do hash (remover acento, minúsculas, descartar o que não for letra ou número, aceitando hífen, espaço ou tudo junto), guardar só o hash (bcrypt/argon2), erro genérico ("código inválido") e limite de tentativas.
@@ -111,7 +117,7 @@ Opcional para quem usa: **desligado por padrão**, ativado em Configurações. S
 - **Segredo cifrado no banco** (não pode ser hash, o servidor precisa dele), com chave gerada na instalação e **incluído no backup** (que já é cifrado), para a restauração não trancar o administrador.
 - **Login:** senha primeiro, depois o código; limite de tentativas também no segundo passo.
 - **Perdeu o celular:** código de recuperação ou comando de redefinição do administrador; ambos desligam o 2FA. Como o código passa a valer pelos dois fatores, precisa ser tratado como a chave mestra: aparece uma vez, hash no banco, limite de tentativas.
-- **Reaproveitamento (também em projeto particular):** manter autenticação, 2FA, código de recuperação, backup e configurações num pacote próprio, sem depender das classes de doador (`Donor`, `Address`...). Assim dá para copiar o conjunto para outro projeto. Basta separar por pacote; um módulo Maven só se a necessidade aparecer.
+- **Isolamento:** manter autenticação, 2FA, código de recuperação, backup e configurações num pacote próprio, sem depender das classes de doador (`Donor`, `Address`...), por coesão e isolamento do domínio. Basta separar por pacote.
 
 
 ### Configurações da entidade
@@ -223,7 +229,7 @@ Relação 1:1 **opcional** com `Donor`: o `Address` é o lado dono, com a chave 
 | `city` | `String` | `city` | até 100 |
 | `state` | `String` | `state` | UF, 2 letras |
 
-No banco todos os campos do endereço aceitam nulo; a obrigatoriedade é regra da API (ver abaixo).
+As colunas obrigatórias do endereço (todas menos `complement`) passam a ser `NOT NULL` também no banco (Parte 7.1). A API continua validando e devolvendo as mensagens (ver abaixo).
 
 ### Datas
 `Instant` em UTC, gravado como `TIMESTAMP` sem fuso (propriedades `hibernate.type.preferred_instant_jdbc_type=TIMESTAMP` e `hibernate.jdbc.time_zone=UTC`). Sem `columnDefinition` nas entidades. As datas vêm de `@PrePersist` e `@PreUpdate`, não da auditoria do Spring Data. Nos dados de exemplo o `created_at` é informado com valor fixo, porque o Liquibase não passa pelo `@PrePersist`.
@@ -282,7 +288,8 @@ Cada enum tem `id` (código curto) e `description` (rótulo em português), mais
 ## 8. Segurança e privacidade: checklist
 
 - [ ] Nenhum segredo, senha ou telefone real no repositório (incluindo o histórico).
-- [ ] Segredo do JWT e senha do banco aleatórios por instalação.
+- [ ] ~~Segredo do JWT e senha do banco aleatórios por instalação.~~ Substituído pela decisão de sessão (não há segredo de JWT).
+- [ ] Senha do banco aleatória por instalação.
 - [ ] Sem senha padrão do administrador.
 - [ ] CORS restrito à origem do front.
 - [ ] Backup criptografado; CSV com aviso de dados pessoais.
@@ -338,8 +345,9 @@ Notas:
 ## 10. Perguntas em aberto
 
 - **Licença:** MIT, já no `LICENSE`. Falta preencher `<licenses>` no `pom.xml` e decidir o que entra no README sobre dados pessoais: o projeto trata CPF e tipo sanguíneo.
-- **Autenticação:** JWT ou sessão (decidir ao chegar na etapa).
+- ~~**Autenticação:** JWT ou sessão (decidir ao chegar na etapa).~~ Substituído: decidido por sessão com cookie.
+- **Topologia front/API** (mesmo site ou domínios diferentes): decidir antes da Parte 7.3; ver seção 4, Autenticação.
 - **Formato do código de recuperação** (caracteres ou palavras em português): decidir na etapa de autenticação; ver "Decisão adiada" na seção 9. Qualquer lista de palavras precisa ser livre.
-- **Tipo de merge** (squash ou merge commit) e comportamento do release-please nas versões `0.x`: decidir na Parte 7.
+- **Tipo de merge** (squash ou merge commit) e comportamento do release-please nas versões `0.x`: decidir na Parte 8.
 - **Testcontainers** (testar contra PostgreSQL real em vez de só H2): decidir depois da Parte 5.
-- **Repositório template** extraído deste projeto, depois da Parte 7.
+- **Repositório template** extraído deste projeto, depois da Parte 8.

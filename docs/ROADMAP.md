@@ -45,13 +45,23 @@ Uma parte por vez. Marque `[x]` quando o PR da parte for aprovado e mergeado na 
   - **5.3 PostgreSQL com Testcontainers** (não feita; só se mexermos na busca ou na ordenação): busca sem acento só se prova com banco.
     - Candidato: ordenação por `name` com acento, hífen e maiúscula pode diferir entre H2 e PostgreSQL (collation); só se prova com banco.
   - Pronto quando: cada cenário das partes 5.1 e 5.2 tem teste (a 5.3 fica fora, ver acima), e o Diego provou que cada teste falha quando o código é quebrado de propósito.
-- [ ] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
+- [x] **6. CI:** GitHub Actions rodando build e testes em todo PR, como verificação obrigatória na proteção das branches.
   - Pronto quando: um PR com teste quebrado fica bloqueado para merge.
-- [ ] **7. Versionamento:** SemVer automatizado com release-please (gera o PR de release, o `CHANGELOG.md`, a tag `vX.Y.Z` e o GitHub Release a partir dos commits). Decidir aqui o tipo de merge (squash ou merge commit) e o comportamento nas versões `0.x`.
+- [ ] **7. Autenticação:** um único administrador, sessão com cookie (decisões em `docs/PLANO.md`, seção "Autenticação"). Dividida em cinco partes, cada uma com o seu PR e os seus testes junto.
+  - [ ] **7.1 Usuário:** tabela, entidade, senha com hash e restrição de administrador único. Sem endpoint, sem login, sem Spring Security ativo.
+  - [ ] **7.2 Primeiro uso:** código de configuração e criação do administrador.
+  - [ ] **7.3 Login:** login, logout, sessão e limite de tentativas.
+  - [ ] **7.4 Acessos:** proteção das rotas (logado entra, não logado recebe 401), CSRF e adaptação dos testes anteriores (que passam a receber 401 sem login).
+  - [ ] **7.5 Recuperação de senha:** código de recuperação, alterar senha e comando de redefinição.
+- [ ] **8. Versionamento** (depois da primeira versão utilizável): SemVer automatizado com release-please (gera o PR de release, o `CHANGELOG.md`, a tag `vX.Y.Z` e o GitHub Release a partir dos commits). Decidir aqui o tipo de merge (squash ou merge commit) e o comportamento nas versões `0.x`.
   - Pronto quando: um PR de release é aberto, e ao ser mergeado cria a tag, o changelog e o release (primeiro alvo: `0.1.0`).
 
 ## Backlog (ordem a definir depois da Parte 5)
 
-Autenticação (decidir JWT ou sessão), configurações da entidade e logo, CSV, relatório, backup, 2FA opcional, front-end (`frontweb/`, protótipos em `docs/design/`), distribuição com Docker. Endpoint de relatório com endereço completo e "selecionar todos os resultados da busca" (tela de seleção). Detalhes e armadilhas conhecidas estão em `docs/PLANO.md`. Primeiro uso protegido por código de configuração (regras e testes em docs/PLANO.md).
+Configurações da entidade e logo, CSV, relatório, backup, 2FA opcional, front-end (`frontweb/`, protótipos em `docs/design/`), distribuição com Docker. Endpoint de relatório com endereço completo e "selecionar todos os resultados da busca" (tela de seleção). Detalhes e armadilhas conhecidas estão em `docs/PLANO.md`. Autenticação e primeiro uso protegido por código de configuração saíram do backlog: são a Parte 7 (regras e testes em `docs/PLANO.md`).
 
-Extrair um repositório template (base Spring Boot) depois da Parte 7.
+Pendência: decidir a remoção do `spring-boot-h2console` do `pom.xml` (a Parte 4 já fechou).
+
+Candidato a teste: os limites do nome (1, 2, 120, 121 caracteres; espaços nas pontas; só espaços) ainda não têm teste.
+
+Extrair um repositório template (base Spring Boot) depois da Parte 8.

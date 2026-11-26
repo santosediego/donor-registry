@@ -23,27 +23,27 @@ public class Address implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "street", length = 150)
+	@Column(name = "street", nullable = false, length = 150)
 	private String street;
 
-	@Column(name = "street_number", length = 10)
+	@Column(name = "street_number", nullable = false, length = 10)
 	private String number;
 
 	@Column(name = "complement", length = 100)
 	private String complement;
 
-	@Column(name = "neighborhood", length = 80)
+	@Column(name = "neighborhood", nullable = false, length = 80)
 	private String neighborhood;
 
 	// Digits only
-	@Column(name = "zip_code", length = 8)
+	@Column(name = "zip_code", nullable = false, length = 8)
 	private String zipCode;
 
-	@Column(name = "city", length = 100)
+	@Column(name = "city", nullable = false, length = 100)
 	private String city;
 
 	// UF (two letters)
-	@Column(name = "state", length = 2)
+	@Column(name = "state", nullable = false, length = 2)
 	private String state;
 
 	// Owning side of the 1:1 relation: the foreign key lives in tb_address.donor_id

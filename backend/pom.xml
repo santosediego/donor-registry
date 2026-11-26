@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>25</java.version>
+		<!-- Not managed by the Spring Boot BOM: update by hand -->
+		<bouncycastle.version>1.87</bouncycastle.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -49,6 +51,19 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+
+		<!-- Password hashing only: spring-security-crypto does not enable Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
+		<!-- Argon2 implementation used by Argon2PasswordEncoder -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk18on</artifactId>
+			<version>${bouncycastle.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
